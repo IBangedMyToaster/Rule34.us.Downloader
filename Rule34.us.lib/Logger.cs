@@ -25,6 +25,25 @@ namespace Rule34.us.Downloader
             Console.ReadKey();
         }
 
+        public void LogSimpleAt(string message, int x, int y, ConsoleColor? color = null)
+        {
+            if (color != null)
+                Console.ForegroundColor = color.Value;
+
+            Console.SetCursorPosition(x, y);
+            Console.Write(message);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public void LogSimple(string message, ConsoleColor? color = null)
+        {
+            if(color != null)
+                Console.ForegroundColor = color.Value;
+
+            Console.Write(message);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
         public void Log(string message, LogLevel level)
         {
             var tuple = GetColorByLogLevel(level);

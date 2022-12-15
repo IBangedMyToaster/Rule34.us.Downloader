@@ -9,16 +9,14 @@ namespace Rule34.us.Downloader.View
         {
             Logger logger = new Logger(Encoding.UTF8);
             MainViewViewModel mainViewViewModel;
-            ConsoleManager consoleManager = new ConsoleManager();
+            ConsoleManager consoleManager = new ConsoleManager(logger);
             List<string> tags;
-
-            logger.DebugLog();
 
             do
             {
 
                 consoleManager.PrintTitle();
-                tags = new TagAnalyzer(Console.ReadLine()).Analyze();
+                tags = new TagAnalyzer(Console.ReadLine(), logger).Analyze();
                 mainViewViewModel = new MainViewViewModel(tags, logger);
                 // Download
 

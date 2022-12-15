@@ -47,15 +47,6 @@ namespace Rule34.us.Downloader
             if (!ids.Any())
                 return;
 
-            //string uri;
-
-            //ids.ForEach(id =>
-            //{
-            //    uri = DownloadId(id);
-            //    SaveImage(uri, id, GetImageFormat(Path.GetExtension(uri)));
-            //    Console.WriteLine("Saved Image");
-            //});
-
             string configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "rule34.json");
             Config conf = new Config(configPath, false);
 
@@ -64,26 +55,6 @@ namespace Rule34.us.Downloader
 
             Dictionary<string, string> links = DownloadMultiple(ids.ToArray());
             links.ToList().ForEach(kvp => SaveFile(kvp.Value, Path.Combine(tagsDirectory, kvp.Key)));
-
-            //foreach(var link in links)
-            //    SaveImage(link.Value, link.Key, GetImageFormat(link.Value));
-
-            #region Testing
-
-            //Dictionary<string, int> stats = new Dictionary<string, int>();
-            //foreach (var link in links)
-            //{
-            //    string key = Path.GetExtension(link.Value);
-
-            //    if (stats.ContainsKey(key))
-            //        stats[key]++;
-            //    else
-            //        stats.Add(key, 1);
-            //}
-            //Console.WriteLine(String.Join("\n", stats.Select(kvp => $"{kvp.Key} | {kvp.Value}")));
-            //File.WriteAllLines("testLinks.txt", links.Keys);
-
-            #endregion
 
             _logger.Log("Saved Image", LogLevel.Information);
         }
@@ -142,24 +113,6 @@ namespace Rule34.us.Downloader
                 client.DownloadFileAsync(new Uri(url), $"{filename}{Path.GetExtension(url)}");
             }
         }
-
-        public void SaveImage(string imageUrl, string filename, ImageFormat format)
-        {
-            WebClient client = new WebClient();
-            Stream stream = client.OpenRead(imageUrl);
-            Bitmap bitmap; bitmap = new Bitmap(stream);
-
-            Directory.CreateDirectory("Result");
-
-            if (bitmap != null)
-            {
-                bitmap.Save($"Result/{filename}.{format.ToString().ToLower()}", format);
-            }
-
-            stream.Flush();
-            stream.Close();
-            client.Dispose();
-        }
         
         private ImageFormat GetImageFormat(string? extension) => extension switch
         {
@@ -172,6 +125,10 @@ namespace Rule34.us.Downloader
 
         public void RetrieveIdsByTags()
         {
+            _logger.LogSimple("searching...\n\n");
+            _logger.LogSimple("searching for image links...\n" +
+                              "This Process might take 2-3 mins to complete.\n" +
+                              "please be patient..\n", ConsoleColor.DarkCyan);
             long counter = 0;
 
             do
