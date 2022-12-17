@@ -94,25 +94,24 @@ namespace Rule34.us.Downloader
             Directory.CreateDirectory(tagFolder);
 
             int pageCounter = 1;
-            Dictionary<string, string> links = DownloadMultiple(ids.ToArray(), ref pageCounter);
+            Dictionary<string, string> links = DownloadMultiple(ids.ToArray(), tagFolder, ref pageCounter);
 
-            //links.ToList().ForEach(kvp => web.SaveFile(kvp.Value, Path.Combine(tagFolder, kvp.Key)));
-
-            logger.LogSimple("Downloading Files..\n", ConsoleColor.DarkYellow);
-            links.ToList().ForEach(kvp => Task.Run(() => web.SaveFile(kvp.Value, Path.Combine(tagFolder, kvp.Key))).Wait());
-            logger.LogSimple("Download completed!\n\n", ConsoleColor.Green);
+            //logger.LogSimple("Downloading Files..\n", ConsoleColor.DarkYellow);
+            //links.ToList().ForEach(kvp => Task.Run(() => web.SaveFile(kvp.Value, Path.Combine(tagFolder, kvp.Key))).Wait());
+            //logger.LogSimple("Download completed!\n\n", ConsoleColor.Green);
         }
 
-        private Dictionary<string, string> DownloadMultiple(string[] ids, ref int pageCounter)
+        private Dictionary<string, string> DownloadMultiple(string[] ids, string tagFolder, ref int pageCounter)
         {
             Dictionary<string, string> links = new Dictionary<string, string>();
 
-
+            WebUtilities web = new WebUtilities();
             HtmlDocument doc = new HtmlDocument();
             HtmlNode contentChild;
             int runs = 1;
             bool newPage = true;
             int amountOfIds = ids.Count();
+            string link;
 
             foreach (string id in ids)
             {
@@ -129,9 +128,12 @@ namespace Rule34.us.Downloader
                                                .FirstChild.NextSibling;
 
                 if (contentChild.Name == "img")
-                    links.Add(id, contentChild.GetAttributeValue<string>("src", "n/a"));
+                    link = contentChild.GetAttributeValue<string>("src", "n/a");
                 else
-                    links.Add(id, contentChild.ChildNodes[1].GetAttributeValue<string>("src", "n/a"));
+                    link = contentChild.ChildNodes[1].GetAttributeValue<string>("src", "n/a");
+
+                links.Add(id, link);
+                web.SaveFile(link, Path.Combine(tagFolder, id));
 
                 if (runs / pageCounter == 42)
                 {
