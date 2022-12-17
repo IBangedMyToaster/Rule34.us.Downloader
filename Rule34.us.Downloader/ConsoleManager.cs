@@ -1,9 +1,4 @@
 ﻿using Rule34.us.Downloader.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rule34.us.Downloader.View
 {
@@ -18,7 +13,7 @@ namespace Rule34.us.Downloader.View
 
         private const string author = "IBangedMyToaster";
         private const string site = @"https://rule34.us";
-        private const string github = @"https://github.com/PlaceHolder";
+        private const string github = @"https://github.com/IBangedMyToaster/Rule34.us.Downloader";
         private const string description = $"Rule34 downloader allows you to download all the images present in {site} site\r\nJust enter the appropriate tags and it will download all images of that tag into your computer!\r\nFor tags follow the same convention that used in Rule34\r\nFor more information visit the {github}";
 
         public ConsoleManager(Logger logger)
@@ -41,26 +36,13 @@ namespace Rule34.us.Downloader.View
             return msg + new String('\n', spaces);
         }
 
-        internal bool UserWantsToContinue()
+        public bool UserWantsToContinue()
         {
-            logger.LogSimple(Write("Do you want to continue? (Y/N): ", 0), titleColor);
+            logger.LogSimple(Write("Ready for another round!\nYou can download more images by continuing..", 2), descriptionColor);
+            logger.LogSimple("Enter [c] to continue; else any other key to exit: ");
 
-            do
-            {
-                string input = Console.ReadLine();
-
-                if (input.Matches("n"))
-                    return false;
-                else if (input.Matches("y"))
-                    return true;
-
-                Console.ForegroundColor = ConsoleColor.Red;
-                ;
-                Console.ForegroundColor = ConsoleColor.White;
-
-                logger.LogSimple(Write($"The Input \"{input}\" is invalid!", 1), ConsoleColor.Red);
-
-            } while (true);
+            char input = Console.ReadKey().KeyChar;
+            return input.Matches('c');
         }
     }
 }

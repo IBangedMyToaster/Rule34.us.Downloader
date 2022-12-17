@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Rule34.us.Downloader
+﻿namespace Rule34.us.Downloader
 {
     public class TagAnalyzer
     {
@@ -23,10 +17,12 @@ namespace Rule34.us.Downloader
 
         public List<string> Analyze()
         {
-            if(tags == null)
+            if (tags == null)
                 throw new ArgumentNullException("tags");
 
-            logger.LogSimple($"searching Tags: [{HighlightTags(tags)}]\n");
+
+
+            logger.LogSimple($"searching tags: [{HighlightTags(tags)}]\n");
 
             return tags.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(tag => tag.Trim()).ToList();
         }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.Text;
 
 namespace Rule34.us.Downloader
 {
@@ -37,7 +34,7 @@ namespace Rule34.us.Downloader
 
         public void LogSimple(string message, ConsoleColor? color = null)
         {
-            if(color != null)
+            if (color != null)
                 Console.ForegroundColor = color.Value;
 
             Console.Write(message);

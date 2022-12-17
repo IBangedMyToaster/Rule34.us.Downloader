@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Rule34.us.Downloader
 {
@@ -22,7 +16,7 @@ namespace Rule34.us.Downloader
 
         public Config(string savePath, bool serializer)
         {
-            if(!File.Exists(savePath))
+            if (!File.Exists(savePath))
             {
                 File.SetAttributes(savePath, (new FileInfo(savePath)).Attributes | FileAttributes.Normal);
                 File.Create(savePath).Close();

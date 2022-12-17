@@ -1,182 +1,67 @@
 ﻿using HtmlAgilityPack;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using System.Drawing.Imaging;
-using System.Globalization;
-using System.Linq;
 using System.Net;
-using System.Net.Http.Headers;
-using System.Net.Http;
-using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using System.Security;
 
 namespace Rule34.us.Downloader
 {
     public class MainViewViewModel
     {
-        private Logger _logger;
+        private Logger logger;
+        private string command;
         private List<string> tags;
-        private List<string> ids = new List<string>();
-        private const string imageHoster = "img2.rule34.us";
-        private const string videoHoster = "video.rule34.us";
-
-        private Func<string, string> _getImageById = (id) =>
-        {
-            return $@"https://rule34.us/index.php?r=posts/view&id={id}";
-        };
-
-        private Func<List<string>, long, string> _link = (tagList, pageNum) =>
-        {
-            string tags = tagList.Any() ? String.Join("+", tagList) : "all";
-            string page = $"&page={pageNum}";
-
-            return $@"https://rule34.us/index.php?r=posts/index&q={tags}{page}";
-        };
+        private List<string> ids;
+        private FileManager fileManager;
 
         public MainViewViewModel(List<string> tags, Logger logger)
         {
-            this._logger = logger;
+            this.logger = logger;
             this.tags = tags;
-            RetrieveIdsByTags();
 
-            if (!ids.Any())
-                return;
-
-            string configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "rule34.json");
-            Config conf = new Config(configPath, false);
-
-            string tagsDirectory = Path.Combine(conf.savePath, String.Join("_", tags));
-            Directory.CreateDirectory(tagsDirectory);
-
-            Dictionary<string, string> links = DownloadMultiple(ids.ToArray());
-            links.ToList().ForEach(kvp => SaveFile(kvp.Value, Path.Combine(tagsDirectory, kvp.Key)));
-
-            _logger.Log("Saved Image", LogLevel.Information);
+            this.fileManager = new FileManager(logger);
+            DownloadTags(tags);
         }
 
-        private string DownloadId(string id)
+        public MainViewViewModel(string command, List<string> tags, Logger logger)
         {
-            string link;
+            this.command = command;
+            this.tags = tags;
+            this.logger = logger;
 
-            HtmlDocument doc = new HtmlDocument();
-            HtmlNode contentChild;
+            this.fileManager = new FileManager(logger);
 
-            LoadHTMLDocWithLink(doc, _getImageById(id));
-
-            contentChild = doc.DocumentNode.SelectSingleNode("//div[@class='content_push']")
-                                            .FirstChild.NextSibling;
-
-            if (contentChild.Name == "img")
-                link = contentChild.GetAttributeValue<string>("src", "n/a");
-            else
-                link = contentChild.ChildNodes[1].GetAttributeValue<string>("src", "n/a");
-
-            return link;
+            GetActionByCommand(command, tags).Invoke();
         }
 
-        private Dictionary<string, string> DownloadMultiple(string[] ids)
+        private Action GetActionByCommand(string command, List<string> tags) => command switch
         {
-            Dictionary<string, string> links = new Dictionary<string, string>();
-            
-            HtmlDocument doc = new HtmlDocument();
-            HtmlNode contentChild;
-            int counter = 1;
-
-            foreach(string id in ids)
-            {
-                LoadHTMLDocWithLink(doc, _getImageById(id));
-
-                contentChild = doc.DocumentNode.SelectSingleNode("//div[@class='content_push']")
-                                               .FirstChild.NextSibling;
-
-                if (contentChild.Name == "img")
-                    links.Add(id, contentChild.GetAttributeValue<string>("src", "n/a"));
-                else
-                    links.Add(id, contentChild.ChildNodes[1].GetAttributeValue<string>("src", "n/a"));
-
-                _logger.Log($"Collected number {counter}", LogLevel.Information);
-                counter++;
-            }
-
-            return links;
-        }
-
-        private void SaveFile(string url, string filename)
-        {
-            using (var client = new WebClient())
-            {
-                client.DownloadFileAsync(new Uri(url), $"{filename}{Path.GetExtension(url)}");
-            }
-        }
-        
-        private ImageFormat GetImageFormat(string? extension) => extension switch
-        {
-            ".jpeg" => ImageFormat.Jpeg,
-            ".png" => ImageFormat.Png,
-            ".jpg" => ImageFormat.Jpeg,
-            ".gif" => ImageFormat.Gif,
-            _ => throw new NotImplementedException()
+            "--update" => () => UpdateAllFiles(tags),
+            _ => throw new NotImplementedException(command)
         };
 
-        public void RetrieveIdsByTags()
+        public void DownloadTags(List<string> tags)
         {
-            _logger.LogSimple("searching...\n\n");
-            _logger.LogSimple("searching for image links...\n" +
-                              "This Process might take 2-3 mins to complete.\n" +
-                              "please be patient..\n", ConsoleColor.DarkCyan);
-            long counter = 0;
-
-            do
-            {
-                List<string>? request = Request(_link(tags, counter));
-
-                if (!request.Any() || request == null)
-                    break;
-
-                ids.AddRange(request);
-                Console.WriteLine($"Collected Page {counter + 1}, total elements: {ids.Count()}");
-                counter++;
-
-            } while (true);
-
-            Console.WriteLine($"{counter} pages found");
+            var ids = fileManager.RetrieveIdsByTags(tags);
+            fileManager.DownloadFiles(ids, tags);
         }
 
-        private List<string>? Request(string link)
+        public void UpdateAllFiles(List<string> tags)
         {
-            List<string> ids;
+            string id;
+            List<TagDirectory> directories = fileManager.GetFoldersWithTags(tags).Select(path => new TagDirectory(path)).ToList();
 
-            HtmlDocument htmlDocument = new HtmlDocument();
-            LoadHTMLDocWithLink(htmlDocument, link);
-
-            try
+            foreach (var directory in directories)
             {
-                ids = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='thumbail-container']").ChildNodes
-                                               .SelectMany(p => p.ChildNodes.Select(l => l.Id.ToString()))
-                                               .ToList();
-            }
-            catch (System.NullReferenceException)
-            {
-                return null;
-            }
+                id = fileManager.GetLastIdFromFolder(directory.OriginalPath);
+                var ids = fileManager.RetrieveIdsByTags(directory.Tags, id);
 
-            return ids;
-        }
+                if(!ids.Any())
+                {
+                    logger.LogSimple($"Directory {directory.Name} is UpToDate!\n", ConsoleColor.Green);
+                    continue;
+                }
 
-        private void LoadHTMLDocWithLink(HtmlDocument htmlDocument, string link)
-        {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(link);
-
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            using (Stream stream = response.GetResponseStream())
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                htmlDocument.Load(reader);
+                fileManager.DownloadFiles(ids, tags, directory.OriginalPath);
+                logger.LogSimple($"Updated {directory.Name}\n", ConsoleColor.Green);
             }
         }
     }

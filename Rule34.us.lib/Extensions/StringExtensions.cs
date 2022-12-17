@@ -8,12 +8,9 @@ namespace Rule34.us.Downloader.Extensions
 {
     public static class StringExtensions
     {
-        public static bool Matches(this string value, string matchValue)
+        public static bool Contains(this string value, IEnumerable<string> list)
         {
-            string val = value.ToLower().Trim();
-            matchValue = matchValue.ToLower().Trim();
-
-            return val == matchValue;
+            return list.All(item => value.Contains(item));
         }
     }
 }

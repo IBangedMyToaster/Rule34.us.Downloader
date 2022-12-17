@@ -1,5 +1,4 @@
-﻿using Rule34.us.Downloader;
-using System.Text;
+﻿using System.Text;
 
 namespace Rule34.us.Downloader.View
 {
@@ -17,12 +16,20 @@ namespace Rule34.us.Downloader.View
 
                 consoleManager.PrintTitle();
                 tags = new TagAnalyzer(Console.ReadLine(), logger).Analyze();
-                mainViewViewModel = new MainViewViewModel(tags, logger);
+
+                if (tags.Any() && IsACommand(tags))
+                    mainViewViewModel = new MainViewViewModel(tags.First(), tags.Skip(1).ToList(), logger);
+                else
+                    mainViewViewModel = new MainViewViewModel(tags, logger);
+                
                 // Download
 
             } while (consoleManager.UserWantsToContinue());
-            
+        }
 
+        private static bool IsACommand(List<string> tags)
+        {
+            return tags.First().StartsWith("--");
         }
     }
 }
