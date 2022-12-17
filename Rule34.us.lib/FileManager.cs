@@ -95,7 +95,12 @@ namespace Rule34.us.Downloader
 
             int pageCounter = 1;
             Dictionary<string, string> links = DownloadMultiple(ids.ToArray(), ref pageCounter);
-            links.ToList().ForEach(kvp => web.SaveFile(kvp.Value, Path.Combine(tagFolder, kvp.Key)));
+
+            //links.ToList().ForEach(kvp => web.SaveFile(kvp.Value, Path.Combine(tagFolder, kvp.Key)));
+
+            logger.LogSimple("Downloading Files..\n", ConsoleColor.DarkYellow);
+            links.ToList().ForEach(kvp => Task.Run(() => web.SaveFile(kvp.Value, Path.Combine(tagFolder, kvp.Key))).Wait());
+            logger.LogSimple("Download completed!\n\n", ConsoleColor.Green);
         }
 
         private Dictionary<string, string> DownloadMultiple(string[] ids, ref int pageCounter)

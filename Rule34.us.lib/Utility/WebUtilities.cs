@@ -10,11 +10,11 @@ namespace Rule34.us.Downloader.Utility
 {
     internal class WebUtilities
     {
-        internal void SaveFile(string url, string filename)
+        internal async Task SaveFile(string url, string filename)
         {
             using (var client = new WebClient())
             {
-                client.DownloadFileAsync(new Uri(url), $"{filename}{Path.GetExtension(url)}");
+                client.DownloadFileTaskAsync(new Uri(url), $"{filename}{Path.GetExtension(url)}");
             }
         }
 
