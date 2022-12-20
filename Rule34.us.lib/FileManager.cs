@@ -16,7 +16,8 @@ namespace Rule34.us.Downloader
         private WebUtilities web = new WebUtilities();
         private const string imageHoster = "img2.rule34.us";
         private const string videoHoster = "video.rule34.us";
-        Config conf = new Config(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "rule34.json"), false);
+        Config conf = new Config();
+
 
         private Func<string, string> _getImageById = (id) =>
         {
@@ -30,7 +31,6 @@ namespace Rule34.us.Downloader
 
             return $@"https://rule34.us/index.php?r=posts/index&q={tags}{page}";
         };
-
 
         public FileManager(Logger logger)
         {

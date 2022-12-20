@@ -6,7 +6,12 @@ namespace Rule34.us.Downloader
     public class Config
     {
         [JsonInclude]
-        public string savePath = "Results";
+        public string savePath;
+
+        [JsonIgnore]
+        string defaultSavePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "rule34.us");
+        [JsonIgnore]
+        string configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "rule34.json");
 
         [JsonConstructor]
         public Config(string savePath)
@@ -14,23 +19,24 @@ namespace Rule34.us.Downloader
             this.savePath = savePath;
         }
 
-        public Config(string savePath, bool serializer)
+        public Config()
         {
-            if (!File.Exists(savePath))
-            {
-                File.SetAttributes(savePath, (new FileInfo(savePath)).Attributes | FileAttributes.Normal);
-                File.Create(savePath).Close();
-                Serialize(savePath);
-                return;
-            }
+            Config? conf = GetExistingConfig(configPath) ?? Serialize(configPath);
 
-            Config? conf = InitializeConfig(savePath) ?? Serialize(savePath);
+            var som = conf.savePath;
 
-            this.savePath = conf.savePath;
+            this.savePath = String.IsNullOrEmpty(conf.savePath) ? defaultSavePath : conf.savePath;
         }
 
-        private Config? InitializeConfig(string path)
+        private Config? GetExistingConfig(string path)
         {
+            if (!File.Exists(path))
+            {
+                File.Create(path).Close();
+                savePath = defaultSavePath;
+                return null;
+            }
+
             using (StreamReader reader = new StreamReader(path))
             {
                 string rawJson = reader.ReadToEnd();
