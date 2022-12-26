@@ -22,6 +22,14 @@ namespace Rule34.us.Downloader
             Console.ReadKey();
         }
 
+        public void CrashLog(string filename, string errorMessage)
+        {
+            if(!File.Exists(filename))
+                File.Create(filename).Close();
+
+            File.AppendAllLines(filename, new[] { $"[{DateTime.Now.ToString("HH:mm:ss | dd.MM.yyyy")}] Error: {errorMessage}" });
+        }
+
         public void LogSimpleAt(string message, int x, int y, ConsoleColor? color = null)
         {
             if (color != null)

@@ -12,5 +12,10 @@ namespace Rule34.us.Downloader.Extensions
         {
             return list.All(item => value.Contains(item));
         }
+
+        public static string[] Trim(this string[] array)
+        {
+            return array.Select(x => x.Trim()).ToArray();
+        }
     }
 }

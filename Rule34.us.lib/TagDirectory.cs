@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rule34.us.Downloader.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,12 @@ namespace Rule34.us.Downloader
             this.Name = new DirectoryInfo(path).Name;
             this.OriginalPath = path;
 
-            Tags = Name.Split('&').ToList();
+            Tags = Name.Split('&').Trim().ToList();
+        }
+
+        public List<string> GetFiles()
+        {
+            return Directory.GetFiles(this.OriginalPath).Select(file => Path.GetFileNameWithoutExtension(file)).ToList();
         }
     }
 }

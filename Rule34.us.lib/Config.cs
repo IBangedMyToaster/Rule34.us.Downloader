@@ -7,6 +7,7 @@ namespace Rule34.us.Downloader
     {
         [JsonInclude]
         public string savePath;
+        public string blacklist;
 
         [JsonIgnore]
         string defaultSavePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "rule34.us");

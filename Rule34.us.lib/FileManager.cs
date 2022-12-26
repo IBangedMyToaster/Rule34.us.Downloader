@@ -14,15 +14,9 @@ namespace Rule34.us.Downloader
     {
         private Logger logger;
         private WebUtilities web = new WebUtilities();
-        private const string imageHoster = "img2.rule34.us";
-        private const string videoHoster = "video.rule34.us";
         Config conf = new Config();
 
-
-        private Func<string, string> _getImageById = (id) =>
-        {
-            return $@"https://rule34.us/index.php?r=posts/view&id={id}";
-        };
+        private Func<string, string> _getImageById = (id) => $@"https://rule34.us/index.php?r=posts/view&id={id}";
 
         private Func<List<string>, long, string> _link = (tagList, pageNum) =>
         {
@@ -61,47 +55,24 @@ namespace Rule34.us.Downloader
             return lastId;
         }
 
-        private void UpdateFiles(List<string> tags)
-        {
-            if (tags.Any())
-            {
-                Console.WriteLine("Update specific");
-                return;
-            }
-
-            Console.WriteLine("Update All");
-
-            string[] dirs = Directory.GetDirectories(conf.savePath);
-
-            foreach (var dir in dirs)
-            {
-                
-            }
-        }
-
         #endregion
 
         #region Download
 
-        public void DownloadFiles(List<string> ids, List<string> tags, string tagFolder = null)
+        public string CheckTagFolder(string[] ids, List<string> tags, string tagFolder = null)
         {
             if (!ids.Any())
-                return;
+                return null;
 
             if(tagFolder == null)
                 tagFolder = Path.Combine(conf.savePath, String.Join(" & ", tags));
 
             Directory.CreateDirectory(tagFolder);
 
-            int pageCounter = 1;
-            Dictionary<string, string> links = DownloadMultiple(ids.ToArray(), tagFolder, ref pageCounter);
-
-            //logger.LogSimple("Downloading Files..\n", ConsoleColor.DarkYellow);
-            //links.ToList().ForEach(kvp => Task.Run(() => web.SaveFile(kvp.Value, Path.Combine(tagFolder, kvp.Key))).Wait());
-            //logger.LogSimple("Download completed!\n\n", ConsoleColor.Green);
+            return tagFolder;
         }
 
-        private Dictionary<string, string> DownloadMultiple(string[] ids, string tagFolder, ref int pageCounter)
+        public Dictionary<string, string> DownloadMultiple(string[] ids, string tagFolder)
         {
             Dictionary<string, string> links = new Dictionary<string, string>();
 
@@ -109,18 +80,11 @@ namespace Rule34.us.Downloader
             HtmlDocument doc = new HtmlDocument();
             HtmlNode contentChild;
             int runs = 1;
-            bool newPage = true;
             int amountOfIds = ids.Count();
             string link;
 
             foreach (string id in ids)
             {
-                if (newPage)
-                {
-                    logger.LogSimple($"collecting files from page = {pageCounter}\n", ConsoleColor.White);
-                    newPage = false;
-                }
-
                 web.LoadHTMLDocWithLink(doc, _getImageById(id));
                 logger.LogSimple($"[{runs}/{amountOfIds}] {_getImageById(id)}\n");
 
@@ -134,23 +98,14 @@ namespace Rule34.us.Downloader
 
                 links.Add(id, link);
                 web.SaveFile(link, Path.Combine(tagFolder, id));
-
-                if (runs / pageCounter == 42)
-                {
-                    PrintCollectingStats(pageCounter, links);
-                    pageCounter++;
-                    newPage = true;
-                }
                 runs++;
             }
 
-            PrintCollectingStats(pageCounter, links);
-            pageCounter++;
-
+            PrintCollectingStats(links);
             return links;
         }
 
-        public List<string> RetrieveIdsByTags(List<string> tags, string id = null)
+        public string[] RetrieveIdsByTags(List<string> tags, string id = null)
         {
             logger.LogSimple("\nsearching...\n\n");
             logger.LogSimple("searching for image links...\n" +
@@ -180,18 +135,16 @@ namespace Rule34.us.Downloader
             } while (true);
 
             logger.LogSimple($"Found {counter} pages with {ids.Count()} elements.\n\n", ConsoleColor.White);
-            return ids;
+            return ids.ToArray();
         }
 
         #endregion
 
         #region Utility
 
-        private void PrintCollectingStats(int pageCounter, Dictionary<string, string> links)
+        private void PrintCollectingStats(Dictionary<string, string> links)
         {
-            logger.LogSimple($"page {pageCounter} done! ", ConsoleColor.White);
             logger.LogSimple($"[ total file count: {links.Count()} ; images: {GetAmountOf(links, Format.Image)} ; videos: {GetAmountOf(links, Format.Video)} ]\n\n", ConsoleColor.Yellow);
-            pageCounter++;
         }
 
         private object GetAmountOf(Dictionary<string, string> links, Format format)
