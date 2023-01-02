@@ -7,6 +7,10 @@
     <Nullable>enable</Nullable>
     <AssemblyName>rule34.us Downloader</AssemblyName>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <RepositoryUrl>https://github.com/IBangedMyToaster/Rule34.us.Downloader</RepositoryUrl>
+    <SignAssembly>False</SignAssembly>
+    <Authors>IBangedMyToaster</Authors>
+    <AssemblyOriginatorKeyFile>D:\Z) Programming\B) Activ\Rule34.us.Downloader\Keys\pub</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>

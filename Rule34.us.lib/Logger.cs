@@ -2,27 +2,9 @@
 
 namespace Rule34.us.Downloader
 {
-    public class Logger
+    public static class Logger
     {
-        public Logger(Encoding outputEncoding)
-        {
-            Console.OutputEncoding = outputEncoding;
-        }
-
-        [Obsolete]
-        public void DebugLog()
-        {
-            this.Log("Success", LogLevel.Success);
-            this.Log("Waiting", LogLevel.Waiting);
-            this.Log("Debug", LogLevel.Debug);
-            this.Log("Information", LogLevel.Information);
-            this.Log("Warning", LogLevel.Warning);
-            this.Log("Error", LogLevel.Error);
-
-            Console.ReadKey();
-        }
-
-        public void CrashLog(string filename, string errorMessage)
+        public static void CrashLog(string filename, string errorMessage)
         {
             if(!File.Exists(filename))
                 File.Create(filename).Close();
@@ -30,7 +12,9 @@ namespace Rule34.us.Downloader
             File.AppendAllLines(filename, new[] { $"[{DateTime.Now.ToString("HH:mm:ss | dd.MM.yyyy")}] Error: {errorMessage}" });
         }
 
-        public void LogSimpleAt(string message, int x, int y, ConsoleColor? color = null)
+        //public static void PrintCommands(string[] commands)
+
+        public static void LogSimpleAt(string message, int x, int y, ConsoleColor? color = null)
         {
             if (color != null)
                 Console.ForegroundColor = color.Value;
@@ -40,7 +24,7 @@ namespace Rule34.us.Downloader
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void LogSimple(string message, ConsoleColor? color = null)
+        public static void LogSimple(string message, ConsoleColor? color = null)
         {
             if (color != null)
                 Console.ForegroundColor = color.Value;
@@ -49,7 +33,7 @@ namespace Rule34.us.Downloader
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public void Log(string message, LogLevel level)
+        public static void Log(string message, LogLevel level)
         {
             var tuple = GetColorByLogLevel(level);
             Console.ForegroundColor = tuple.Item2;
@@ -62,7 +46,7 @@ namespace Rule34.us.Downloader
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        private Tuple<string, ConsoleColor> GetColorByLogLevel(LogLevel level) => level switch
+        private static Tuple<string, ConsoleColor> GetColorByLogLevel(LogLevel level) => level switch
         {
             LogLevel.Error => new Tuple<string, ConsoleColor>("| ⛔ | ", ConsoleColor.Red),
             LogLevel.Warning => new Tuple<string, ConsoleColor>("| ⚠️ | ", ConsoleColor.DarkYellow),

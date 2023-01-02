@@ -12,9 +12,8 @@ namespace Rule34.us.Downloader
 {
     internal class FileManager
     {
-        private Logger logger;
         private WebUtilities web = new WebUtilities();
-        Config conf = new Config();
+        internal static ConfigManager configManager = new ConfigManager();
 
         private Func<string, string> _getImageById = (id) => $@"https://rule34.us/index.php?r=posts/view&id={id}";
 
@@ -26,9 +25,12 @@ namespace Rule34.us.Downloader
             return $@"https://rule34.us/index.php?r=posts/index&q={tags}{page}";
         };
 
-        public FileManager(Logger logger)
+        public FileManager()
         {
-            this.logger = logger;
+            var existingConfig = configManager.CheckForExistingConfig();
+
+            if(existingConfig == null)
+                configManager.Create();
         }
 
         #region Update
@@ -36,9 +38,9 @@ namespace Rule34.us.Downloader
         internal List<string> GetFoldersWithTags(List<string> tags)
         {
             if (!tags.Any())
-                return Directory.GetDirectories(conf.savePath).ToList();
+                return Directory.GetDirectories(configManager.Configuration.SavePath).ToList();
 
-            return Directory.GetDirectories(conf.savePath).Where(dir => new DirectoryInfo(dir).Name.Contains(tags)).ToList();
+            return Directory.GetDirectories(configManager.Configuration.SavePath).Where(dir => new DirectoryInfo(dir).Name.Contains(tags)).ToList();
         }
 
         internal string GetLastIdFromFolder(string path)
@@ -65,7 +67,7 @@ namespace Rule34.us.Downloader
                 return null;
 
             if(tagFolder == null)
-                tagFolder = Path.Combine(conf.savePath, String.Join(" & ", tags));
+                tagFolder = Path.Combine(configManager.Configuration.SavePath, String.Join(" & ", tags));
 
             Directory.CreateDirectory(tagFolder);
 
@@ -86,7 +88,7 @@ namespace Rule34.us.Downloader
             foreach (string id in ids)
             {
                 web.LoadHTMLDocWithLink(doc, _getImageById(id));
-                logger.LogSimple($"[{runs}/{amountOfIds}] {_getImageById(id)}\n");
+                Logger.LogSimple($"[{runs}/{amountOfIds}] {_getImageById(id)}\n");
 
                 contentChild = doc.DocumentNode.SelectSingleNode("//div[@class='content_push']")
                                                .FirstChild.NextSibling;
@@ -107,8 +109,8 @@ namespace Rule34.us.Downloader
 
         public string[] RetrieveIdsByTags(List<string> tags, string id = null)
         {
-            logger.LogSimple("\nsearching...\n\n");
-            logger.LogSimple("searching for image links...\n" +
+            Logger.LogSimple("\nsearching...\n\n");
+            Logger.LogSimple("searching for image links...\n" +
                               "This Process might take 2-3 mins to complete.\n" +
                               "please be patient..\n\n", ConsoleColor.DarkCyan);
             long counter = 0;
@@ -134,7 +136,7 @@ namespace Rule34.us.Downloader
 
             } while (true);
 
-            logger.LogSimple($"Found {counter} pages with {ids.Count()} elements.\n\n", ConsoleColor.White);
+            Logger.LogSimple($"Found {counter} pages with {ids.Count()} elements.\n\n", ConsoleColor.White);
             return ids.ToArray();
         }
 
@@ -144,7 +146,7 @@ namespace Rule34.us.Downloader
 
         private void PrintCollectingStats(Dictionary<string, string> links)
         {
-            logger.LogSimple($"[ total file count: {links.Count()} ; images: {GetAmountOf(links, Format.Image)} ; videos: {GetAmountOf(links, Format.Video)} ]\n\n", ConsoleColor.Yellow);
+            Logger.LogSimple($"[ total file count: {links.Count()} ; images: {GetAmountOf(links, Format.Image)} ; videos: {GetAmountOf(links, Format.Video)} ]\n\n", ConsoleColor.Yellow);
         }
 
         private object GetAmountOf(Dictionary<string, string> links, Format format)
