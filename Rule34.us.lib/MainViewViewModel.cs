@@ -1,8 +1,4 @@
-﻿using HtmlAgilityPack;
-using System.Diagnostics.CodeAnalysis;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Net;
+﻿using Rule34.us.Downloader.Utility;
 
 namespace Rule34.us.Downloader
 {
@@ -11,19 +7,16 @@ namespace Rule34.us.Downloader
         private string command;
         private List<string> tags;
         private FileManager fileManager;
-        private List<string> globalTags
-        {
-            get
-            {
-                return FileManager.configManager.Configuration.GlobalTags.Tags;
-            }
-        }
+
+        private ConfigManager configManager = new ConfigManager();
+        private Config configuration;
 
         public MainViewViewModel(List<string> tags)
         {
             this.tags = tags;
 
-            this.fileManager = new FileManager();
+            configuration = configManager.GetConfig();
+            this.fileManager = new FileManager(configuration);
 
             DownloadTags(tags);
         }
@@ -33,7 +26,8 @@ namespace Rule34.us.Downloader
             this.command = command;
             this.tags = tags;
 
-            this.fileManager = new FileManager();
+            configuration = configManager.GetConfig();
+            this.fileManager = new FileManager(configuration);
 
             GetActionByCommand(command, tags).Invoke();
         }
@@ -54,31 +48,31 @@ namespace Rule34.us.Downloader
         {
             if (!tags.Any())
             {
-                FileManager.configManager.Configuration.GlobalTags.PrintTags();
+                configuration.GlobalTags.PrintTags();
                 return;
             }
 
-            FileManager.configManager.Configuration.GlobalTags.Remove(tags.ToArray());
-            FileManager.configManager.Save();
+            configuration.GlobalTags.Remove(tags.ToArray());
+            configManager.Save(configuration);
         }
 
         private void GlobalAdd(List<string> tags)
         {
-            if(!tags.Any())
+            if (!tags.Any())
             {
-                FileManager.configManager.Configuration.GlobalTags.PrintTags();
+                configuration.GlobalTags.PrintTags();
                 return;
             }
 
-            FileManager.configManager.Configuration.GlobalTags.AddRange(tags.ToArray());
-            FileManager.configManager.Save();
+            configuration.GlobalTags.AddRange(tags.ToArray());
+            configManager.Save(configuration);
         }
 
         private void AlterSaveFolder(List<string> tags)
         {
             if (!tags.Any())
             {
-                Logger.LogSimple(FileManager.configManager.Configuration.SavePath+"\n", ConsoleColor.White);
+                Logger.LogSimple(configuration.SavePath + "\n", ConsoleColor.White);
                 return;
             }
 
@@ -90,15 +84,17 @@ namespace Rule34.us.Downloader
                 return;
             }
 
-            FileManager.configManager.Configuration.SavePath = path;
-            FileManager.configManager.Save();
+            configuration.SavePath = path;
+            configManager.Save(configuration);
         }
+
+        #region CompleteFiles
 
         private void CompleteFiles()
         {
             List<TagDirectory> directories = fileManager.GetFoldersWithTags(tags).Select(path => new TagDirectory(path)).ToList();
 
-            foreach(var directory in directories)
+            foreach (var directory in directories)
             {
                 var ids = GetIds(directory.Tags);
                 string[] missingIds = ids.Except(directory.GetFiles()).ToArray();
@@ -106,6 +102,10 @@ namespace Rule34.us.Downloader
                 fileManager.DownloadMultiple(missingIds, tagFolder);
             }
         }
+
+        #endregion
+
+        #region Update Files
 
         public void UpdateAllFiles(List<string> tags)
         {
@@ -117,7 +117,7 @@ namespace Rule34.us.Downloader
                 id = fileManager.GetLastIdFromFolder(directory.OriginalPath);
                 var ids = GetIds(directory.Tags, id);
 
-                if(!ids.Any())
+                if (!ids.Any())
                 {
                     Logger.LogSimple($"Directory {directory.Name} is UpToDate!\n", ConsoleColor.Green);
                     continue;
@@ -129,6 +129,8 @@ namespace Rule34.us.Downloader
             }
         }
 
+        #endregion
+
         public void DownloadTags(List<string> tags)
         {
             var ids = GetIds(tags);
@@ -138,9 +140,9 @@ namespace Rule34.us.Downloader
         }
 
         public string[] GetIds(List<string> tags, string id = null)
-         {
-            if(globalTags != null)
-                tags = tags.Select(tag => tag.ToLower().Trim()).Union(FileManager.configManager.Configuration.GlobalTags.GetTags()).ToList();
+        {
+            if (configuration.GlobalTags != null)
+                tags = tags.Select(tag => tag.ToLower().Trim()).Concat(configuration.GlobalTags.GetTags()).ToList();
 
             return fileManager.RetrieveIdsByTags(tags, id);
         }

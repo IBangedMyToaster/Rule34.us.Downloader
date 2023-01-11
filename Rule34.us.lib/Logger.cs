@@ -1,12 +1,10 @@
-﻿using System.Text;
-
-namespace Rule34.us.Downloader
+﻿namespace Rule34.us.Downloader
 {
     public static class Logger
     {
         public static void CrashLog(string filename, string errorMessage)
         {
-            if(!File.Exists(filename))
+            if (!File.Exists(filename))
                 File.Create(filename).Close();
 
             File.AppendAllLines(filename, new[] { $"[{DateTime.Now.ToString("HH:mm:ss | dd.MM.yyyy")}] Error: {errorMessage}" });

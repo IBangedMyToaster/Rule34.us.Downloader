@@ -1,19 +1,13 @@
 ﻿using HtmlAgilityPack;
 using Rule34.us.Downloader.Extensions;
 using Rule34.us.Downloader.Utility;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rule34.us.Downloader
 {
     internal class FileManager
     {
         private WebUtilities web = new WebUtilities();
-        internal static ConfigManager configManager = new ConfigManager();
+        private Config config;
 
         private Func<string, string> _getImageById = (id) => $@"https://rule34.us/index.php?r=posts/view&id={id}";
 
@@ -25,12 +19,9 @@ namespace Rule34.us.Downloader
             return $@"https://rule34.us/index.php?r=posts/index&q={tags}{page}";
         };
 
-        public FileManager()
+        public FileManager(Config config)
         {
-            var existingConfig = configManager.CheckForExistingConfig();
-
-            if(existingConfig == null)
-                configManager.Create();
+            this.config = config;
         }
 
         #region Update
@@ -38,9 +29,9 @@ namespace Rule34.us.Downloader
         internal List<string> GetFoldersWithTags(List<string> tags)
         {
             if (!tags.Any())
-                return Directory.GetDirectories(configManager.Configuration.SavePath).ToList();
+                return Directory.GetDirectories(config.SavePath).ToList();
 
-            return Directory.GetDirectories(configManager.Configuration.SavePath).Where(dir => new DirectoryInfo(dir).Name.Contains(tags)).ToList();
+            return new List<string>() { Directory.GetDirectories(config.SavePath).First(dir => new DirectoryInfo(dir).Name.Contains(tags)) };
         }
 
         internal string GetLastIdFromFolder(string path)
@@ -66,8 +57,8 @@ namespace Rule34.us.Downloader
             if (!ids.Any())
                 return null;
 
-            if(tagFolder == null)
-                tagFolder = Path.Combine(configManager.Configuration.SavePath, String.Join(" & ", tags));
+            if (tagFolder == null)
+                tagFolder = Path.Combine(config.SavePath, String.Join(" & ", tags));
 
             Directory.CreateDirectory(tagFolder);
 
@@ -109,6 +100,8 @@ namespace Rule34.us.Downloader
 
         public string[] RetrieveIdsByTags(List<string> tags, string id = null)
         {
+            Logger.CrashLog("Debug.txt", String.Join(" ", tags));
+
             Logger.LogSimple("\nsearching...\n\n");
             Logger.LogSimple("searching for image links...\n" +
                               "This Process might take 2-3 mins to complete.\n" +

@@ -1,18 +1,16 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using System.Text.Json;
+﻿using Rule34.us.Downloader.Utility;
 using System.Text.Json.Serialization;
-using Rule34.us.Downloader.Utility;
 
 namespace Rule34.us.Downloader
 {
     public class Config
     {
-        internal static string configPath = PathManager.PathInDocuments("rule34.json");
+        public static string configPath = PathManager.PathInDocuments("rule34.json");
 
         [JsonPropertyOrder(1)]
         public GlobalTags GlobalTags { get; set; }
 
-        private string _savePath = PathManager.PathInPictures("rule34.us");
+        private string _savePath;
         public string SavePath
         {
             get { return _savePath; }
@@ -23,6 +21,12 @@ namespace Rule34.us.Downloader
         {
             this.SavePath = savePath;
             this.GlobalTags = globalTags;
+        }
+
+        public Config()
+        {
+            this.GlobalTags = new GlobalTags();
+            this.SavePath = PathManager.PathInPictures("rule34.us");
         }
     }
 }

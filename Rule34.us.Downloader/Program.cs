@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Rule34.us.Downloader.View
+﻿namespace Rule34.us.Downloader.View
 {
     internal class Program
     {
@@ -20,7 +18,7 @@ namespace Rule34.us.Downloader.View
                         mainViewViewModel = new MainViewViewModel(tags.First(), tags.Skip(1).ToList());
                     else
                         mainViewViewModel = new MainViewViewModel(tags);
-                
+
                     // Download
 
                 } while (ConsoleManager.UserWantsToContinue());
