@@ -1,4 +1,7 @@
-﻿namespace Rule34.us.Downloader.View
+﻿using Rule34.us.Downloader.Logic;
+using Rule34.us.Downloader.Logic.Tags;
+
+namespace Rule34.us.Downloader.View
 {
     internal class Program
     {

@@ -1,8 +1,8 @@
 ﻿using HtmlAgilityPack;
-using Rule34.us.Downloader.Extensions;
-using Rule34.us.Downloader.Utility;
+using Rule34.us.Downloader.Logic.Extensions;
+using Rule34.us.Downloader.Logic.Utility;
 
-namespace Rule34.us.Downloader
+namespace Rule34.us.Downloader.Logic
 {
     internal class FileManager
     {
@@ -13,7 +13,7 @@ namespace Rule34.us.Downloader
 
         private Func<List<string>, long, string> _link = (tagList, pageNum) =>
         {
-            string tags = tagList.Any() ? String.Join("+", tagList) : "all";
+            string tags = tagList.Any() ? string.Join("+", tagList) : "all";
             string page = $"&page={pageNum}";
 
             return $@"https://rule34.us/index.php?r=posts/index&q={tags}{page}";
@@ -58,7 +58,7 @@ namespace Rule34.us.Downloader
                 return null;
 
             if (tagFolder == null)
-                tagFolder = Path.Combine(config.SavePath, String.Join(" & ", tags));
+                tagFolder = Path.Combine(config.SavePath, string.Join(" & ", tags));
 
             Directory.CreateDirectory(tagFolder);
 
@@ -100,7 +100,7 @@ namespace Rule34.us.Downloader
 
         public string[] RetrieveIdsByTags(List<string> tags, string id = null)
         {
-            Logger.CrashLog("Debug.txt", String.Join(" ", tags));
+            Logger.CrashLog("Debug.txt", string.Join(" ", tags));
 
             Logger.LogSimple("\nsearching...\n\n");
             Logger.LogSimple("searching for image links...\n" +

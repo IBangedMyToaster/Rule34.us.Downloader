@@ -1,7 +1,7 @@
 ﻿using HtmlAgilityPack;
 using System.Net;
 
-namespace Rule34.us.Downloader.Utility
+namespace Rule34.us.Downloader.Logic.Utility
 {
     internal class WebUtilities
     {
@@ -26,7 +26,7 @@ namespace Rule34.us.Downloader.Utility
                                                .SelectMany(p => p.ChildNodes.Select(l => l.Id.ToString()))
                                                .ToList();
             }
-            catch (System.NullReferenceException)
+            catch (NullReferenceException)
             {
                 return null;
             }

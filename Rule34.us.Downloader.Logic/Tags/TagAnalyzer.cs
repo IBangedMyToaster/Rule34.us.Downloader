@@ -1,4 +1,4 @@
-﻿namespace Rule34.us.Downloader
+﻿namespace Rule34.us.Downloader.Logic.Tags
 {
     public class TagAnalyzer
     {
@@ -23,7 +23,7 @@
 
         private string HighlightTags(string? tags)
         {
-            return String.Join(" ", tags.Split(' ').Select(tag => $"'{tag}'"));
+            return string.Join(" ", tags.Split(' ').Select(tag => $"'{tag}'"));
         }
     }
 }

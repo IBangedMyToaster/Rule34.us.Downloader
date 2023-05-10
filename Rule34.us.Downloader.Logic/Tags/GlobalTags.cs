@@ -1,4 +1,4 @@
-﻿namespace Rule34.us.Downloader
+﻿namespace Rule34.us.Downloader.Logic.Tags
 {
     public class GlobalTags
     {
@@ -6,19 +6,19 @@
 
         public GlobalTags(List<string> tags)
         {
-            this.Tags = tags;
+            Tags = tags;
         }
 
         public GlobalTags()
         {
-            this.Tags = new List<string>();
+            Tags = new List<string>();
         }
 
         public void Remove(string[] tags)
         {
             foreach (var tag in tags.Select(tag => tag.Trim()))
             {
-                this.Tags.RemoveAll(t => t.ToLower() == tag.ToLower());
+                Tags.RemoveAll(t => t.ToLower() == tag.ToLower());
             }
         }
 
@@ -47,11 +47,11 @@
                 Logger.LogSimple(tag + "\n");
         }
 
-        internal void SortTags() => this.Tags = Tags.OrderBy(tag => tag).ToList();
+        internal void SortTags() => Tags = Tags.OrderBy(tag => tag).ToList();
 
         internal void RemoveDuplicats()
         {
-            this.Tags = this.Tags.Select(tag => tag.ToLower()).Distinct().ToList();
+            Tags = Tags.Select(tag => tag.ToLower()).Distinct().ToList();
         }
     }
 }

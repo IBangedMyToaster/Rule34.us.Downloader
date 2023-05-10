@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Rule34.us.lib\Rule34.us.Downloader.csproj" />
+    <ProjectReference Include="..\Rule34.us.Downloader.Logic\Rule34.us.Downloader.Logic.csproj" />
   </ItemGroup>
 
 </Project>

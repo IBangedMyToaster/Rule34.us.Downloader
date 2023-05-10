@@ -1,4 +1,5 @@
-﻿using Rule34.us.Downloader.Extensions;
+﻿using Rule34.us.Downloader.Logic;
+using Rule34.us.Downloader.Logic.Extensions;
 
 namespace Rule34.us.Downloader.View
 {

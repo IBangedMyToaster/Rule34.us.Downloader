@@ -1,4 +1,4 @@
-﻿namespace Rule34.us.Downloader.Utility
+﻿namespace Rule34.us.Downloader.Logic.Utility
 {
     internal struct PathManager
     {

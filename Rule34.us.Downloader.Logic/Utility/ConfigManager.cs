@@ -1,6 +1,7 @@
-﻿using System.Text.Json;
+﻿using Rule34.us.Downloader.Logic;
+using System.Text.Json;
 
-namespace Rule34.us.Downloader.Utility
+namespace Rule34.us.Downloader.Logic.Utility
 {
     internal class ConfigManager
     {

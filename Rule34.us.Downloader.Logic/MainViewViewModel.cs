@@ -1,6 +1,7 @@
-﻿using Rule34.us.Downloader.Utility;
+﻿using Rule34.us.Downloader.Logic.Tags;
+using Rule34.us.Downloader.Logic.Utility;
 
-namespace Rule34.us.Downloader
+namespace Rule34.us.Downloader.Logic
 {
     public class MainViewViewModel
     {
@@ -16,7 +17,7 @@ namespace Rule34.us.Downloader
             this.tags = tags;
 
             configuration = configManager.GetConfig();
-            this.fileManager = new FileManager(configuration);
+            fileManager = new FileManager(configuration);
 
             DownloadTags(tags);
         }
@@ -27,7 +28,7 @@ namespace Rule34.us.Downloader
             this.tags = tags;
 
             configuration = configManager.GetConfig();
-            this.fileManager = new FileManager(configuration);
+            fileManager = new FileManager(configuration);
 
             GetActionByCommand(command, tags).Invoke();
         }
@@ -76,7 +77,7 @@ namespace Rule34.us.Downloader
                 return;
             }
 
-            string path = String.Join(" ", tags.Select(tag => tag.Trim()));
+            string path = string.Join(" ", tags.Select(tag => tag.Trim()));
 
             if (!Directory.Exists(path))
             {

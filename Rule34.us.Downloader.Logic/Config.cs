@@ -1,7 +1,8 @@
-﻿using Rule34.us.Downloader.Utility;
+﻿using Rule34.us.Downloader.Logic.Tags;
+using Rule34.us.Downloader.Logic.Utility;
 using System.Text.Json.Serialization;
 
-namespace Rule34.us.Downloader
+namespace Rule34.us.Downloader.Logic
 {
     public class Config
     {
@@ -19,14 +20,14 @@ namespace Rule34.us.Downloader
 
         public Config(string savePath, GlobalTags globalTags)
         {
-            this.SavePath = savePath;
-            this.GlobalTags = globalTags;
+            SavePath = savePath;
+            GlobalTags = globalTags;
         }
 
         public Config()
         {
-            this.GlobalTags = new GlobalTags();
-            this.SavePath = PathManager.PathInPictures("rule34.us");
+            GlobalTags = new GlobalTags();
+            SavePath = PathManager.PathInPictures("rule34.us");
         }
     }
 }

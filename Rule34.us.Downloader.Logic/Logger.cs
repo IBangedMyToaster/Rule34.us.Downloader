@@ -1,4 +1,4 @@
-﻿namespace Rule34.us.Downloader
+﻿namespace Rule34.us.Downloader.Logic
 {
     public static class Logger
     {

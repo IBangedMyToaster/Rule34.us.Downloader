@@ -1,4 +1,4 @@
-﻿namespace Rule34.us.Downloader.Extensions
+﻿namespace Rule34.us.Downloader.Logic.Extensions
 {
     public static class StringExtensions
     {

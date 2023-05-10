@@ -1,6 +1,6 @@
-﻿using Rule34.us.Downloader.Extensions;
+﻿using Rule34.us.Downloader.Logic.Extensions;
 
-namespace Rule34.us.Downloader
+namespace Rule34.us.Downloader.Logic.Tags
 {
     public class TagDirectory
     {
@@ -10,15 +10,15 @@ namespace Rule34.us.Downloader
 
         public TagDirectory(string path)
         {
-            this.Name = new DirectoryInfo(path).Name;
-            this.OriginalPath = path;
+            Name = new DirectoryInfo(path).Name;
+            OriginalPath = path;
 
             Tags = Name.Split('&').Trim().ToList();
         }
 
         public List<string> GetFiles()
         {
-            return Directory.GetFiles(this.OriginalPath).Select(file => Path.GetFileNameWithoutExtension(file)).ToList();
+            return Directory.GetFiles(OriginalPath).Select(file => Path.GetFileNameWithoutExtension(file)).ToList();
         }
     }
 }

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rule34.us.Downloader.View", "Rule34.us.Downloader\Rule34.us.Downloader.View.csproj", "{A07E5F48-09BB-42F4-9B45-EAFC99D81E57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rule34.us.Downloader.View", "Rule34.us.Downloader.View\Rule34.us.Downloader.View.csproj", "{A07E5F48-09BB-42F4-9B45-EAFC99D81E57}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rule34.us.Downloader", "Rule34.us.lib\Rule34.us.Downloader.csproj", "{30B436F5-28F4-4AC2-8372-53AE105F08E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rule34.us.Downloader.Logic", "Rule34.us.Downloader.Logic\Rule34.us.Downloader.Logic.csproj", "{30B436F5-28F4-4AC2-8372-53AE105F08E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
