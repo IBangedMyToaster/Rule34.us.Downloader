@@ -1,14 +1,13 @@
-﻿using Rule34.us.Downloader.Logic;
-using Rule34.us.Downloader.Logic.Extensions;
+﻿using Rule34.us.Downloader.Logic.Extensions;
+using Rule34.us.Downloader.Logic.Utility;
 
 namespace Rule34.us.Downloader.View
 {
     internal static class ConsoleManager
     {
-        private static ConsoleColor titleColor = ConsoleColor.Red;
-        private static ConsoleColor descriptionColor = ConsoleColor.DarkYellow;
-        private static ConsoleColor tagsColor = ConsoleColor.Green;
-        private static ConsoleColor downloadColor = ConsoleColor.White;
+        private static readonly ConsoleColor titleColor = ConsoleColor.Red;
+        private static readonly ConsoleColor descriptionColor = ConsoleColor.DarkYellow;
+        private static readonly ConsoleColor tagsColor = ConsoleColor.Green;
         private const string title = " ________  ___  ___  ___       _______  ________  ___   ___      ___  ___  ________      \r\n|\\   __  \\|\\  \\|\\  \\|\\  \\     |\\  ___ \\|\\_____  \\|\\  \\ |\\  \\    |\\  \\|\\  \\|\\   ____\\     \r\n\\ \\  \\|\\  \\ \\  \\\\\\  \\ \\  \\    \\ \\   __/\\|____|\\ /\\ \\  \\\\_\\  \\   \\ \\  \\\\\\  \\ \\  \\___|_    \r\n \\ \\   _  _\\ \\  \\\\\\  \\ \\  \\    \\ \\  \\_|/__   \\|\\  \\ \\______  \\   \\ \\  \\\\\\  \\ \\_____  \\   \r\n  \\ \\  \\\\  \\\\ \\  \\\\\\  \\ \\  \\____\\ \\  \\_|\\ \\ __\\_\\  \\|_____|\\  \\ __\\ \\  \\\\\\  \\|____|\\  \\  \r\n   \\ \\__\\\\ _\\\\ \\_______\\ \\_______\\ \\_______\\\\_______\\     \\ \\__\\\\__\\ \\_______\\____\\_\\  \\ \r\n    \\|__|\\|__|\\|_______|\\|_______|\\|_______\\|_______|      \\|__\\|__|\\|_______|\\_________\\\r\n                                                                             \\|_________|";
 
         private const string author = "IBangedMyToaster";
@@ -33,13 +32,12 @@ namespace Rule34.us.Downloader.View
 
         private static string Write(string msg, int spaces = 2)
         {
-            return msg + new String('\n', spaces);
+            return msg + new string('\n', spaces);
         }
 
         public static bool UserWantsToContinue()
         {
-            Logger.LogSimple(Write("Ready for another round!\nYou can download more images by continuing..", 2), descriptionColor);
-            Logger.LogSimple("Enter [c] to continue; else any other key to exit: ");
+            Logger.LogSimple("\nEnter [c] to continue; else any other key to exit: ", ConsoleColor.DarkYellow);
 
             char input = Console.ReadKey().KeyChar;
             return input.Matches('c');

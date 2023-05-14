@@ -5,26 +5,23 @@ namespace Rule34.us.Downloader.Logic.Utility
 {
     internal class WebUtilities
     {
-        internal async Task SaveFile(string url, string filename)
+        private string[]? ids;
+        private readonly HtmlDocument htmlDocument = new();
+
+        internal async Task Download(string url, string filepath)
         {
-            using (var client = new WebClient())
-            {
-                client.DownloadFileTaskAsync(new Uri(url), $"{filename}{Path.GetExtension(url)}");
-            }
+            using WebClient client = new();
+            await client.DownloadFileTaskAsync(new Uri(url), $"{filepath}{Path.GetExtension(url)}");
         }
 
-        internal List<string>? Request(string link)
+        internal string[]? Request(string link)
         {
-            List<string> ids;
-
-            HtmlDocument htmlDocument = new HtmlDocument();
             LoadHTMLDocWithLink(htmlDocument, link);
 
             try
             {
                 ids = htmlDocument.DocumentNode.SelectSingleNode("//div[@class='thumbail-container']").ChildNodes
-                                               .SelectMany(p => p.ChildNodes.Select(l => l.Id.ToString()))
-                                               .ToList();
+                                               .SelectMany(p => p.ChildNodes.Select(l => l.Id.ToString())).ToArray();
             }
             catch (NullReferenceException)
             {
@@ -38,12 +35,10 @@ namespace Rule34.us.Downloader.Logic.Utility
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(link);
 
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            using (Stream stream = response.GetResponseStream())
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                htmlDocument.Load(reader);
-            }
+            using HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            using Stream stream = response.GetResponseStream();
+            using StreamReader reader = new(stream);
+            htmlDocument.Load(reader);
         }
     }
 }

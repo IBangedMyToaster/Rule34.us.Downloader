@@ -1,28 +1,19 @@
 ﻿using Rule34.us.Downloader.Logic.Extensions;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rule34.us.Downloader.Logic.Commands
 {
     public class CommandManager
     {
-        List<Command> commands = new List<Command>();
+        private readonly List<Command> commands = new();
 
         public bool IsACommand(string value)
         {
-            return value.StartsWith(Command.prefix) && IsValid(value);
+            return value.StartsWith(Command.prefix) && IsValid(value.Remove(Command.prefix));
         }
 
-        private bool IsValid(string value)
+        public bool IsValid(string value)
         {
-            throw new NotImplementedException();
-            return value.Contains(Command.prefix);
+            return commands.Select(command => command.Name).Matches(value);
         }
 
         public bool Contains(string value)
@@ -34,16 +25,35 @@ namespace Rule34.us.Downloader.Logic.Commands
         {
             commands.Add(command);
         }
+
+        public void Execute(string command, Tags.Tags tags)
+        {
+            commands.First(com => com.Name == command.Remove(Command.prefix)).Action.Invoke(tags);
+        }
+
+        public void ExecuteDefault(Tags.Tags tags)
+        {
+            commands.First(com => com.Name == "download").Action.Invoke(tags);
+        }
+
+        public void Help()
+        {
+            foreach (Command command in commands)
+            {
+                Console.WriteLine($"--{command.Name,-25}{command.Description}");
+            }
+        }
+
     }
 
     public class Command
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public Action Action { get; set; }
+        public Action<Tags.Tags> Action { get; set; }
         public static string prefix = "--";
 
-        public Command(string name, string description, Action action)
+        public Command(string name, string description, Action<Tags.Tags> action)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -57,7 +67,7 @@ namespace Rule34.us.Downloader.Logic.Commands
 
             Name = name;
             Description = description;
-            Action = action ?? throw new ArgumentNullException(nameof(action));
+            Action = action;
         }
     }
 }

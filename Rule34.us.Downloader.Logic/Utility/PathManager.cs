@@ -3,9 +3,17 @@
     internal struct PathManager
     {
         public static string Pictures { get; private set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
-        public static string Documents { get; private set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+        public static string AppData { get; private set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ScrewsTools", "Rule34.us");
 
-        public static string PathInDocuments(string file) => Path.Combine(Documents, file);
-        public static string PathInPictures(string file) => Path.Combine(Pictures, file);
+        public static string PathInAppData(string file)
+        {
+            Directory.CreateDirectory(AppData);
+            return Path.Combine(AppData, file);
+        }
+
+        public static string PathInPictures(string file)
+        {
+            return Path.Combine(Pictures, file);
+        }
     }
 }
