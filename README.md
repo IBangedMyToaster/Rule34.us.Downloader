@@ -25,20 +25,29 @@ Within this File there are some Properties that may be modified:
 
 # Usage
 When it comes to simply dowloading Content all you need to do is to enter the appropriates Tags. The tool follows the same [conventions](https://rule34.us/index.php?r=help/search) as that of [Rule34.us](https://rule34.us/).
-To see all Commands you may use `Enter Tags: --help`.
+To see all Commands you may use:
+```
+Enter Tags: --help
+```
 
 Usage:
-`Enter Tags: [Command] [Tags]`
+```
+Enter Tags: [Command] [Tags]
+```
 
 ## Download Content
 In Order to download Content all you need to do is enter the Tags. There is a `--download` Command, however it is complete optional.
 The Following Examples result in the same Outcome.
 
 Example1:
-`Enter Tags: stable_diffusion nude`
+```
+Enter Tags: stable_diffusion nude
+```
 
 Example2:
-`Enter Tags: --download stable_diffusion nude`
+```
+Enter Tags: --download stable_diffusion nude
+```
 
 ![2023-05-15 13-43-32_1](https://github.com/IBangedMyToaster/Rule34.us.Downloader/assets/43365830/1d3f8aa0-35ff-4730-afcd-7019e1bac787)
 
@@ -62,7 +71,9 @@ Following Commands help you maintain the Library:
 Since it is possible to run the Tool with Arguments it is possible to create a script to automatically update the Library on Startup of your machine.
 
 If you simply want to update the whole Library your .bat File would look similiar to this:
-`"rule34.us Downloader.exe" --update`
+```
+"rule34.us Downloader.exe" --update
+```
 
 Move the .bat File into `~\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup` and it will keep everything Up-To-Date.
 
