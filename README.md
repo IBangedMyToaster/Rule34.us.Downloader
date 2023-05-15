@@ -25,14 +25,15 @@ Within this File there are some Properties that may be modified:
 
 # Usage
 When it comes to simply dowloading Content all you need to do is to enter the appropriates Tags. The tool follows the same [conventions](https://rule34.us/index.php?r=help/search) as that of [Rule34.us](https://rule34.us/).
-To see all Commands you may use:
-```
-Enter Tags: --help
-```
 
 Usage:
 ```
 Enter Tags: [Command] [Tags]
+```
+
+To see all Commands you may use:
+```
+Enter Tags: --help
 ```
 
 ## Download Content
