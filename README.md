@@ -12,7 +12,7 @@ Rule34.us Downloader allows you to download and maintain content present in [Rul
 For more Information about my choice of website see [Difference between Rule34.us and Rule34.xxx](https://github.com/IBangedMyToaster/Rule34.us.Downloader#difference-between-rule34us-and-rule34xxx)
 
 # Installation
-After downloading the [latest Version](https://github.com/IBangedMyToaster/Rule34.us.Downloader/releases/latest/download/rule34.us.downloader.exe), the tool is ready to run, upon starting it will look like this:
+After downloading the latest Version the tool is ready to run, upon starting it will look like this:
 
 ![Pasted image 20230514204436](https://github.com/IBangedMyToaster/Rule34.us.Downloader/assets/43365830/ccc1130b-918a-4460-9b20-c55c50399073)
 
@@ -57,6 +57,14 @@ Following Commands help you maintain the Library:
 | `--update`   | Optional | Download the newest Content. |
 | `--complete` | Optional | Download all missing Ids.    |
 | `--clean`    | Optional | Deletes all Files that don't Match the Foldertags + Shadowtags |
+
+### Automation
+Since it is possible to run the Tool with Arguments it is possible to create a script to automatically update the Library on Startup of your machine.
+
+If you simply want to update the whole Library your .bat File would look similiar to this:
+`"rule34.us Downloader.exe" --update`
+
+Move the .bat File into `~\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup` and it will keep everything Up-To-Date.
 
 # Troubleshooting
 I case you run into a bug or have Problems with any of the Features i encourage you to open an issue. I will gladly take a look at the problem and solve it.
