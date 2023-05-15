@@ -18,7 +18,13 @@ namespace Rule34.us.Downloader.Logic.Commands
 
             if (Tags.TrimmedInput().Any())
             {
-                UpdateSpecific(TagDirectory.GetDirectoryByTags(ConfigManager.Configuration, Tags));
+                if(!TagDirectory.Exists(ConfigManager.Configuration, this.Tags))
+                {
+                    Logger.LogSimple($"The Folder \"{(string.Join(" ", Tags.TrimmedInput()))}\" does not Exist!\n", ConsoleColor.Red);
+                    return;
+                }
+
+                UpdateSpecific(TagDirectory.GetTagDirectoryByTags(ConfigManager.Configuration, Tags));
                 return;
             }
 
@@ -29,19 +35,19 @@ namespace Rule34.us.Downloader.Logic.Commands
         {
             // Get all ids by tags
             Logger.LogSimple($"Updating {tagDirectory.Name}...\n", ConsoleColor.Yellow); // Log Checking
-            string[] ids = logistic.GetAllIdsByTagsTill(tagDirectory.GetLastId(), tagDirectory.Tags, out int pages);
+            string[] ids = logistic.GetAllIdsByTagsTill(tagDirectory.GetLastId(), tagDirectory.Tags);
 
             // Get all links by ids
             Dictionary<string, string> idLinkPairs = logistic.ConvertIdsToLinks(ids);
 
             // Dowload Files by links
             _ = logistic.Download(tagDirectory.OriginalPath, idLinkPairs);
-            LogUpdateProgress(ids.Count(), tagDirectory).Invoke();  // Log Result
+            LogUpdateProgress(ids.Length, tagDirectory).Invoke();  // Log Result
         }
 
         private void UpdateAll()
         {
-            TagDirectory[] tagDirectories = Directory.GetDirectories(ConfigManager.GetSavePath).Select(dir => new TagDirectory(dir)).ToArray();
+            TagDirectory[] tagDirectories = TagDirectory.GetAllTagDirectories(ConfigManager.Configuration);
 
             foreach (TagDirectory tagDirectory in tagDirectories)
             {
@@ -49,7 +55,7 @@ namespace Rule34.us.Downloader.Logic.Commands
             }
         }
 
-        private Action LogUpdateProgress(int idCount, TagDirectory directory)
+        private static Action LogUpdateProgress(int idCount, TagDirectory directory)
         {
             return idCount switch
             {

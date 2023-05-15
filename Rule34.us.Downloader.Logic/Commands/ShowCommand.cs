@@ -19,17 +19,19 @@ namespace Rule34.us.Downloader.Logic.Commands
 
             // Get all ids by tags
             Logger.LogSimple($"Searching {string.Join(" ", Tags.Raw)}...\n", ConsoleColor.Yellow); // Log Checking
-            string[] ids = logistic.GetAllIdsByTags(Tags, out int pages);
-            LogUpdateProgress(ids.Count()).Invoke();  // Log Result
+            string[] ids = logistic.GetAllIdsByTags(Tags);
+
+            Logger.LogSimple("Found", ConsoleColor.Yellow);
+            Logger.LogSimple($" [{ids.Length}] ", ConsoleColor.White);
+            LogUpdateProgress(ids.Length).Invoke();  // Log Result
         }
 
-        private Action LogUpdateProgress(int idCount)
+        private static Action LogUpdateProgress(int idCount)
         {
             return idCount switch
             {
-                0 => () => Logger.LogSimple($"Nothing was found with the given Tags\n\n", ConsoleColor.Red),
-                1 => () => Logger.LogSimple($"Found {idCount} element with the given Tags\n\n", ConsoleColor.Yellow),
-                _ => () => Logger.LogSimple($"Found {idCount} elements with the given Tags\n\n", ConsoleColor.Yellow),
+                1 => () => Logger.LogSimple($"element with the given Tags\n\n", ConsoleColor.Yellow),
+                _ => () => Logger.LogSimple($"elements with the given Tags\n\n", ConsoleColor.Yellow),
             };
         }
     }

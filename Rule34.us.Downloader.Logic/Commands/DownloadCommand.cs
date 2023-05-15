@@ -13,37 +13,38 @@ namespace Rule34.us.Downloader.Logic.Commands
         {
             Tags = tags ?? throw new ArgumentNullException(nameof(tags));
             ConfigManager = configManager;
-            Execute();
+            TagDirectory? tagDirectory = Execute(out int idCount);
+            LogUpdateProgress(idCount, tagDirectory).Invoke();  // Log Result
         }
 
-        private void Execute()
+        private TagDirectory? Execute(out int idCount)
         {
             Rule34Logistic logistic = new();
+            TagDirectory? tagDirectory = null;
 
             // Get all ids by tags
             Logger.LogSimple($"Downloading {string.Join(" ", Tags.Raw)}...\n", ConsoleColor.Yellow); // Log Checking
-            string[] ids = logistic.GetAllIdsByTags(Tags, out int pages);
-            TagDirectory? tagDirectory = null;
+            string[] ids = logistic.GetAllIdsByTags(Tags);
+            idCount = ids.Length;
 
-            if (ids.Any())
-            {
-                // Get all links by ids
-                Dictionary<string, string> idLinkPairs = logistic.ConvertIdsToLinks(ids);
+            if (!ids.Any())
+                return tagDirectory;
 
-                // Download all files by links and save in folder
-                tagDirectory = TagDirectory.GetDirectoryByTags(ConfigManager.Configuration, Tags);
-                _ = logistic.Download(tagDirectory.OriginalPath, idLinkPairs);
-            }
+            // Get all links by ids
+            Dictionary<string, string> idLinkPairs = logistic.ConvertIdsToLinks(ids);
 
-            LogUpdateProgress(ids.Count(), tagDirectory).Invoke();  // Log Result
+            // Download all files by links and save in folder
+            tagDirectory = TagDirectory.GetTagDirectoryByTags(ConfigManager.Configuration, Tags);
+            _ = logistic.Download(tagDirectory.OriginalPath, idLinkPairs);
+            return tagDirectory;
         }
 
-        private Action LogUpdateProgress(int idCount, TagDirectory? tagDirectory)
+        private static Action LogUpdateProgress(int idCount, TagDirectory? tagDirectory)
         {
             return idCount switch
             {
                 0 => () => Logger.LogSimple($"No Elements with were found with the given Tags!\n\n", ConsoleColor.Red),
-                _ => () => Logger.LogSimple($"Saved {idCount} Elements in \"{tagDirectory.Name}\".\n\n", ConsoleColor.Yellow),
+                _ => () => Logger.LogSimple($"Saved {idCount} Elements in \"{tagDirectory?.Name}\".\n\n", ConsoleColor.Yellow),
             };
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace Rule34.us.Downloader.Logic.Utility
 {
-    internal struct PathManager
+    public struct PathManager
     {
         public static string Pictures { get; private set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
         public static string AppData { get; private set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ScrewsTools", "Rule34.us");

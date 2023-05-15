@@ -30,7 +30,7 @@ namespace Rule34.us.Downloader.Logic.Tags
             ShadowTags = shadowTags;
         }
 
-        private string[] Format(string tags)
+        private static string[] Format(string tags)
         {
             return tags.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(tag => tag.Trim()).ToArray();
         }
@@ -49,6 +49,5 @@ namespace Rule34.us.Downloader.Logic.Tags
         {
             return string.Join(" ", TrimmedInput());
         }
-
     }
 }

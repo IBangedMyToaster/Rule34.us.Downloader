@@ -18,7 +18,13 @@ namespace Rule34.us.Downloader.Logic.Commands
 
             if (Tags.TrimmedInput().Any())
             {
-                CompleteSpecific(TagDirectory.GetDirectoryByTags(ConfigManager.Configuration, Tags));
+                if (!TagDirectory.Exists(ConfigManager.Configuration, this.Tags))
+                {
+                    Logger.LogSimple($"The Folder \"{(string.Join(" ", Tags.TrimmedInput()))}\" does not Exist!\n", ConsoleColor.Red);
+                    return;
+                }
+
+                CompleteSpecific(TagDirectory.GetTagDirectoryByTags(ConfigManager.Configuration, Tags));
                 return;
             }
 
@@ -29,7 +35,7 @@ namespace Rule34.us.Downloader.Logic.Commands
         {
             // Get all ids by tags
             Logger.LogSimple($"Completing {string.Join(" ", tagDirectory.Tags.TrimmedInput())}...\n", ConsoleColor.Yellow); // Log Checking
-            string[] ids = logistic.GetAllIdsByTags(tagDirectory.Tags, out int pages);
+            string[] ids = logistic.GetAllIdsByTags(tagDirectory.Tags);
 
             // Compare existing Folder with Links and Filter doubles
             ids = ids.Except(tagDirectory.GetFilenames()).ToArray();
@@ -40,12 +46,12 @@ namespace Rule34.us.Downloader.Logic.Commands
             // Download all files by links and save in folder
             _ = logistic.Download(tagDirectory.OriginalPath, idLinkPairs);
 
-            LogUpdateProgress(ids.Count(), tagDirectory).Invoke();  // Log Result
+            LogUpdateProgress(ids.Length, tagDirectory).Invoke();  // Log Result
         }
 
         private void CompleteAll()
         {
-            TagDirectory[] tagDirectories = Directory.GetDirectories(ConfigManager.GetSavePath).Select(dir => TagDirectory.GetDirectoryByTags(ConfigManager.Configuration, TagDirectory.GetTagsByPath(dir))).ToArray();
+            TagDirectory[] tagDirectories = TagDirectory.GetAllTagDirectories(ConfigManager.Configuration);
 
             foreach (TagDirectory tagDirectory in tagDirectories)
             {
@@ -53,7 +59,7 @@ namespace Rule34.us.Downloader.Logic.Commands
             }
         }
 
-        private Action LogUpdateProgress(int idCount, TagDirectory directory)
+        private static Action LogUpdateProgress(int idCount, TagDirectory directory)
         {
             return idCount switch
             {

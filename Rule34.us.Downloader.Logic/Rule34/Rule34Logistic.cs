@@ -18,9 +18,9 @@ namespace Rule34.us.Downloader.Logic.Rule34
         /// <param name="tags"></param>
         /// <param name="pages"></param>
         /// <returns></returns>
-        public string[] GetAllIdsByTags(Tags.Tags tags, out int pages)
+        public string[] GetAllIdsByTags(Tags.Tags tags)
         {
-            pages = 0;
+            int pages = 0;
             List<string> ids = new();
             string[]? requestedIds;
 
@@ -48,9 +48,9 @@ namespace Rule34.us.Downloader.Logic.Rule34
         /// <param name="tags"></param>
         /// <param name="pages"></param>
         /// <returns></returns>
-        public string[] GetAllIdsByTagsTill(string id, Tags.Tags tags, out int pages)
+        public string[] GetAllIdsByTagsTill(string id, Tags.Tags tags)
         {
-            pages = 0;
+            int pages = 0;
             List<string> ids = new();
             string[]? requestedIds;
 
@@ -139,7 +139,7 @@ namespace Rule34.us.Downloader.Logic.Rule34
             for (int i = 0; i < idLinkPairs.Count(); i++)
             {
                 kvp = idLinkPairs.ElementAt(i);
-                tasks.Add(web.Download(kvp.Value, Path.Combine(path, kvp.Key)));
+                tasks.Add(WebUtilities.Download(kvp.Value, Path.Combine(path, kvp.Key)));
             }
 
             int x = Console.CursorLeft;

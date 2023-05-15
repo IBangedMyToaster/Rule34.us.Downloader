@@ -1,16 +1,18 @@
 ﻿using HtmlAgilityPack;
+using Rule34.us.Downloader.Logic.Extensions;
 using System.Net;
 
 namespace Rule34.us.Downloader.Logic.Utility
 {
-    internal class WebUtilities
+    public class WebUtilities
     {
         private string[]? ids;
         private readonly HtmlDocument htmlDocument = new();
+        HttpClient? httpClient;
 
-        internal async Task Download(string url, string filepath)
+        public static async Task Download(string url, string filepath)
         {
-            using WebClient client = new();
+            using HttpClient client = new();
             await client.DownloadFileTaskAsync(new Uri(url), $"{filepath}{Path.GetExtension(url)}");
         }
 
@@ -33,12 +35,17 @@ namespace Rule34.us.Downloader.Logic.Utility
 
         internal void LoadHTMLDocWithLink(HtmlDocument htmlDocument, string link)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(link);
-
-            using HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            using Stream stream = response.GetResponseStream();
+            httpClient = new HttpClient();
+            using Stream stream = httpClient.GetStreamAsync(link).GetAwaiter().GetResult();
             using StreamReader reader = new(stream);
             htmlDocument.Load(reader);
+
+            //request = (HttpWebRequest)WebRequest.Create(link);
+
+            //using HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            //using Stream stream = response.GetResponseStream();
+            //using StreamReader reader = new(stream);
+            //htmlDocument.Load(reader);
         }
     }
 }

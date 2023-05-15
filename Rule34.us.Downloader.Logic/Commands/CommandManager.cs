@@ -1,4 +1,5 @@
 ﻿using Rule34.us.Downloader.Logic.Extensions;
+using Rule34.us.Downloader.Logic.Utility;
 
 namespace Rule34.us.Downloader.Logic.Commands
 {
@@ -6,9 +7,17 @@ namespace Rule34.us.Downloader.Logic.Commands
     {
         private readonly List<Command> commands = new();
 
-        public bool IsACommand(string value)
+        public bool? IsACommand(string value)
         {
-            return value.StartsWith(Command.prefix) && IsValid(value.Remove(Command.prefix));
+            bool command = value.StartsWith(Command.prefix);
+            bool valid = IsValid(value.Remove(Command.prefix));
+
+            if (command && valid)
+                return true;
+            else if(!command)
+                return false;
+
+            return null;
         }
 
         public bool IsValid(string value)
@@ -38,9 +47,13 @@ namespace Rule34.us.Downloader.Logic.Commands
 
         public void Help()
         {
+            Console.WriteLine("Usage: [<Command>] [<Tags>]\n");
+
+            Console.WriteLine("Available Commands:");
             foreach (Command command in commands)
             {
-                Console.WriteLine($"--{command.Name,-25}{command.Description}");
+                Console.Write($"  --{command.Name,-15}");
+                Logger.LogSimple(command.Description + "\n", ConsoleColor.Gray);
             }
         }
 
@@ -51,7 +64,7 @@ namespace Rule34.us.Downloader.Logic.Commands
         public string Name { get; set; }
         public string Description { get; set; }
         public Action<Tags.Tags> Action { get; set; }
-        public static string prefix = "--";
+        public static readonly string prefix = "--";
 
         public Command(string name, string description, Action<Tags.Tags> action)
         {
