@@ -47,7 +47,7 @@ namespace Rule34.us.Downloader.Logic.Commands
 
         public void Help()
         {
-            Console.WriteLine("Usage: [<Command>] [<Tags>]\n");
+            Console.WriteLine("Usage: [Command] [Tags]\n");
 
             Console.WriteLine("Available Commands:");
             foreach (Command command in commands)
