@@ -170,7 +170,9 @@ Became a Victim of a Tag you do not want to see content of anymore? Or did you j
 
 ## While browsing
 I like to copy the Filename which is also the ID and go to [rule34.us](https://rule34.us/), click on **"View all Images"**, select any image and change the ID in the Adressbar with the one i copied.
+
 ![image](https://github.com/IBangedMyToaster/Rule34.us.Downloader/assets/43365830/77851a71-8766-42f0-bc48-d8fa7f482b7d)
+
 After pressing Enter with the right ID in place, i try to find out which Tag i need to Filter out.
 It is more of a Trial and Error type of Problem.
 
