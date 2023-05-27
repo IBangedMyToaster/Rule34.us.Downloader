@@ -103,7 +103,7 @@ Display all Commands, thats it..
 
 ## Update
 Probably the biggest one for me on this List when it comes to Life-Quality.
-As shown in [Maintain Content Libraries](https://github.com/IBangedMyToaster/Rule34.us.Downloader/blob/main/README.md#maintain-content-libraries) the Tags following the Command are optional since they refer to your already Present Library.
+As shown in [Maintain Content Libraries](https://github.com/IBangedMyToaster/Rule34.us.Downloader#maintain-content-libraries) the Tags following the Command are optional since they refer to your already Present Library.
 You can update your Entire Library or just a specific Folder within this Library. In Order to just do one Folder you can follow up the Command with the Tags of the Folder or just copy the Foldername.
 
 Update entire Library:
@@ -120,7 +120,7 @@ Update Specific Folder (by copying Foldername):
 Enter Tags: --update stable_diffusion & nude
 ```
 
-To keep your Library Up-To-Date, see [Automation](https://github.com/IBangedMyToaster/Rule34.us.Downloader/blob/main/README.md#automation).
+To keep your Library Up-To-Date, see [Automation](https://github.com/IBangedMyToaster/Rule34.us.Downloader#automation).
 
 ## Complete
 Complete is very similiar to the Update Command, the main Difference is that instead of just looking at the last File in the Folder and Downloading new ones, Complete compares all IDs from the Site and what is currently present in the Folder and fills in the blanks. The Complete Command **does only add** to the collection, it does not delete Content.
@@ -159,7 +159,7 @@ Enter Tags: --clean stable_diffusion & nude
 ```
 
 ## Show
-As shown in [Download Content](https://github.com/IBangedMyToaster/Rule34.us.Downloader/blob/main/README.md#download-content) it is recommended by me to make a little check to know how much Content you are looking forward to. I mostly just enjoy watching Tags strip away unwanted Content :)
+As shown in [Download Content](https://github.com/IBangedMyToaster/Rule34.us.Downloader#download-content) it is recommended by me to make a little check to know how much Content you are looking forward to. I mostly just enjoy watching Tags strip away unwanted Content :)
 
 ```
 Enter Tags: --show stable_diffusion nude
@@ -176,7 +176,7 @@ I like to copy the Filename which is also the ID and go to [rule34.us](https://r
 After pressing Enter with the right ID in place, i try to find out which Tag i need to Filter out.
 It is more of a Trial and Error type of Problem.
 
-Can not find the right Tag to Filter or the File barely has any Tags? See [Issue that can not be fixed](https://github.com/IBangedMyToaster/Rule34.us.Downloader/edit/main/README.md#issue-that-can-not-be-fixed).
+Can not find the right Tag to Filter or the File barely has any Tags? See [Issue that can not be fixed](https://github.com/IBangedMyToaster/Rule34.us.Downloader#issue-that-can-not-be-fixed).
 
 Add the Tag to the Shadow Tags, reopen the App
 
