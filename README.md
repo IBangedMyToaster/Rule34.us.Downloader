@@ -17,14 +17,14 @@ After downloading the latest Version the tool is ready to run, upon starting it 
 ![Pasted image 20230514204436](https://github.com/IBangedMyToaster/Rule34.us.Downloader/assets/43365830/ccc1130b-918a-4460-9b20-c55c50399073) 
 
 # Setup
-On startup the file "~\\AppData\\Roaming\\ScrewsTools\\Rule34.us\\rule34.json" (if not already existend) will be created.
+On startup the file "~\\AppData\\Roaming\\ScrewsTools\\Rule34.us\\rule34.json" (if not already existent) will be created.
 
 Within this File there are some Properties that may be modified:
    1. **SavePath**: Sets location where the library will be created. (by Default the Path is ...\\Pictures\\rule34.us)
-   2. **ShadowTags**: ShadowTags are Tags that will be considered behind the scenes and apply to everything you download in order to keep foldernames simple.
+   2. **ShadowTags**: ShadowTags are Tags that will be considered behind the scenes and apply to everything you download in order to keep folder names simple.
 
 # Usage
-When it comes to simply dowloading Content all you need to do is to enter the appropriates Tags. The tool follows the same [conventions](https://rule34.us/index.php?r=help/search) as that of [Rule34.us](https://rule34.us/).
+When it comes to simply downloading Content all you need to do is to enter the appropriates Tags. The tool follows the same [conventions](https://rule34.us/index.php?r=help/search) as that of [Rule34.us](https://rule34.us/).
 
 Usage:
 ```
@@ -40,12 +40,12 @@ Enter Tags: --help
 In Order to download Content all you need to do is enter the Tags. There is a `--download` Command, however it is complete optional.
 The Following Examples result in the same Outcome.
 
-Example1:
+Example 1:
 ```
 Enter Tags: stable_diffusion nude
 ```
 
-Example2:
+Example 2:
 ```
 Enter Tags: --download stable_diffusion nude
 ```
