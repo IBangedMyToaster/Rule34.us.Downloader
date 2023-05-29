@@ -98,8 +98,8 @@ Enter Tags: --downlaod stable_diffusion nude
 As the Name already indicates, Content with the **given Tags + Shadow Tags** will be downloaded and saved.
 
 ## Help
-Display all Commands, thats it..
-![image](https://github.com/IBangedMyToaster/Rule34.us.Downloader/assets/43365830/4ce32f19-127e-420b-87fb-9214dd1dcf49)
+Display all Commands, thats it..!
+![image](https://github.com/IBangedMyToaster/Rule34.us.Downloader/assets/43365830/9848c73c-9242-4d40-a0af-0c1b2d1c5ef9)
 
 ## Update
 Probably the biggest one for me on this List when it comes to Life-Quality.
