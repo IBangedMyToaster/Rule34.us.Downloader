@@ -69,7 +69,7 @@ Following Commands help you maintain the Library:
 | `--clean`    | Optional | Deletes all Files that don't Match the Foldertags + Shadowtags |
 
 ### Automation
-Since it is possible to run the Tool with Arguments it is possible to create a script to automatically update the Library on Startup of your machine.
+Since you can run the Tool with Arguments it is possible to create a script to automatically update the Library on Startup of your machine.
 
 If you simply want to update the whole Library your .bat File would look similiar to this:
 ```
