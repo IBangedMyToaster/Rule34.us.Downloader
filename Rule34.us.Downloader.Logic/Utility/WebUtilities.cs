@@ -1,6 +1,6 @@
 ﻿using HtmlAgilityPack;
 using Rule34.us.Downloader.Logic.Extensions;
-using System.Net;
+using Rule34.us.Downloader.Logic.Rule34;
 
 namespace Rule34.us.Downloader.Logic.Utility
 {
@@ -8,12 +8,12 @@ namespace Rule34.us.Downloader.Logic.Utility
     {
         private string[]? ids;
         private readonly HtmlDocument htmlDocument = new();
-        HttpClient? httpClient;
+        private HttpClient? httpClient;
 
-        public static async Task Download(string url, string filepath)
+        public static async Task Download(string path, Content content)
         {
             using HttpClient client = new();
-            await client.DownloadFileTaskAsync(new Uri(url), $"{filepath}{Path.GetExtension(url)}");
+            await client.DownloadFileTaskAsync(content.Uri, Path.Combine(path, content.Filename));
         }
 
         internal string[]? Request(string link)
@@ -39,13 +39,6 @@ namespace Rule34.us.Downloader.Logic.Utility
             using Stream stream = httpClient.GetStreamAsync(link).GetAwaiter().GetResult();
             using StreamReader reader = new(stream);
             htmlDocument.Load(reader);
-
-            //request = (HttpWebRequest)WebRequest.Create(link);
-
-            //using HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            //using Stream stream = response.GetResponseStream();
-            //using StreamReader reader = new(stream);
-            //htmlDocument.Load(reader);
         }
     }
 }

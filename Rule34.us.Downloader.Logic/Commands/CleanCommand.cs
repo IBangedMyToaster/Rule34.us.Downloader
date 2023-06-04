@@ -18,7 +18,7 @@ namespace Rule34.us.Downloader.Logic.Commands
 
             if (Tags.TrimmedInput().Any())
             {
-                if (!TagDirectory.Exists(ConfigManager.Configuration, this.Tags))
+                if (!TagDirectory.Exists(ConfigManager.Configuration, Tags))
                 {
                     Logger.LogSimple($"The Folder \"{(string.Join(" ", Tags.TrimmedInput()))}\" does not Exist!\n", ConsoleColor.Red);
                     return;
@@ -35,7 +35,7 @@ namespace Rule34.us.Downloader.Logic.Commands
         {
             // Get all ids by tags
             Logger.LogSimple($"Cleaning {string.Join(" ", tagDirectory.Tags.TrimmedInput())}...\n", ConsoleColor.Yellow); // Log Checking
-            string[] ids = logistic.GetAllIdsByTags(tagDirectory.Tags);
+            string[] ids = logistic.GetAllIdsByTags(tagDirectory.Tags).Select(content => content.Id).ToArray();
 
             // Compare existing Folder with Links and Filter doubles
             string[] filenames = tagDirectory.GetFullFilenames();
@@ -44,7 +44,7 @@ namespace Rule34.us.Downloader.Logic.Commands
             foreach (string file in filenames)
             {
                 tagDirectory.DeleteFile(file);
-                Logger.LogSimple($"[DELETED] {file}\n"); // Log
+                Logger.LogSimple($"[DELETED] {Path.GetFileName(file)}\n"); // Log
             }
 
             LogUpdateProgress(filenames.Length, tagDirectory).Invoke();  // Log Result

@@ -1,8 +1,6 @@
 ﻿using Rule34.us.Downloader.Logic.Commands;
 using Rule34.us.Downloader.Logic.Tags;
 using Rule34.us.Downloader.Logic.Utility;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Rule34.us.Downloader.View
 {
@@ -45,7 +43,7 @@ namespace Rule34.us.Downloader.View
             }
             catch (Exception e)
             {
-                Logger.CrashLog(Path.Combine(PathManager.AppData, "creashReport.log"), e.Message);
+                Logger.CrashLog(Path.Combine(PathManager.AppData, "creashReport.log"), "\n" + String.Join("\n", e.Message, e.TargetSite, e.StackTrace));
             }
         }
 

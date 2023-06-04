@@ -17,25 +17,25 @@ namespace Rule34.us.Downloader.Logic.Commands
             LogUpdateProgress(idCount, tagDirectory).Invoke();  // Log Result
         }
 
-        private TagDirectory? Execute(out int idCount)
+        private TagDirectory? Execute(out int contentCount)
         {
             Rule34Logistic logistic = new();
             TagDirectory? tagDirectory = null;
 
             // Get all ids by tags
             Logger.LogSimple($"Downloading {string.Join(" ", Tags.Raw)}...\n", ConsoleColor.Yellow); // Log Checking
-            string[] ids = logistic.GetAllIdsByTags(Tags);
-            idCount = ids.Length;
+            List<Content> contentList = logistic.GetAllIdsByTags(Tags);
+            contentCount = contentList.Count();
 
-            if (!ids.Any())
+            if (!contentList.Any())
                 return tagDirectory;
 
             // Get all links by ids
-            Dictionary<string, string> idLinkPairs = logistic.ConvertIdsToLinks(ids);
+            logistic.GetLinks(contentList);
 
             // Download all files by links and save in folder
             tagDirectory = TagDirectory.GetTagDirectoryByTags(ConfigManager.Configuration, Tags);
-            _ = logistic.Download(tagDirectory.OriginalPath, idLinkPairs);
+            logistic.Download(tagDirectory.OriginalPath, contentList);
             return tagDirectory;
         }
 

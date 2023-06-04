@@ -18,7 +18,7 @@ namespace Rule34.us.Downloader.Logic.Commands
 
             if (Tags.TrimmedInput().Any())
             {
-                if(!TagDirectory.Exists(ConfigManager.Configuration, this.Tags))
+                if (!TagDirectory.Exists(ConfigManager.Configuration, Tags))
                 {
                     Logger.LogSimple($"The Folder \"{(string.Join(" ", Tags.TrimmedInput()))}\" does not Exist!\n", ConsoleColor.Red);
                     return;
@@ -35,14 +35,14 @@ namespace Rule34.us.Downloader.Logic.Commands
         {
             // Get all ids by tags
             Logger.LogSimple($"Updating {tagDirectory.Name}...\n", ConsoleColor.Yellow); // Log Checking
-            string[] ids = logistic.GetAllIdsByTagsTill(tagDirectory.GetLastId(), tagDirectory.Tags);
+            List<Content> contentList = logistic.GetAllIdsByTags(tagDirectory.Tags, tagDirectory.GetLastId());
 
             // Get all links by ids
-            Dictionary<string, string> idLinkPairs = logistic.ConvertIdsToLinks(ids);
+            logistic.GetLinks(contentList);
 
             // Dowload Files by links
-            _ = logistic.Download(tagDirectory.OriginalPath, idLinkPairs);
-            LogUpdateProgress(ids.Length, tagDirectory).Invoke();  // Log Result
+            logistic.Download(tagDirectory.OriginalPath, contentList);
+            LogUpdateProgress(contentList.Count(), tagDirectory).Invoke();  // Log Result
         }
 
         private void UpdateAll()

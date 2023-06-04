@@ -32,7 +32,23 @@ namespace Rule34.us.Downloader.Logic.Tags
 
         public string GetLastId()
         {
-            return GetFilenames().Select(id => int.Parse(id)).Max().ToString() ?? throw new ArgumentNullException("Last id in Folder was null.");
+            // Debug - Corrupted Filename in Directory
+            //var filenames = GetFilenames();
+            //int[] testArray = new int[filenames.Count()];
+
+            //for (int i = 0; i < filenames.Count(); i++)
+            //{
+            //    if (!int.TryParse(filenames[i], out int result))
+            //    {
+            //        Debug.WriteLine($"{filenames[i]} is corrupted!");
+            //    }
+
+            //    testArray[i] = result;
+            //}
+
+            //return testArray.Any() ? testArray.Max().ToString() : null;
+
+            return GetFilenames().Select(id => int.Parse(id)).Max().ToString() ?? throw new ArgumentNullException("Corrupted Filename found.");
         }
 
         // Static

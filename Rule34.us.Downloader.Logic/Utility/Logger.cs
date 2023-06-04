@@ -37,6 +37,59 @@
             Console.ForegroundColor = ConsoleColor.White;
         }
 
+        public static void LogOnSpot(string message, ConsoleColor? color = null, params object[]? args)
+        {
+            int x = Console.CursorLeft;
+            int y = Console.CursorTop;
+
+            if (color != null)
+            {
+                Console.ForegroundColor = color.Value;
+            }
+
+            Console.Write(message, args);
+            Console.SetCursorPosition(x, y);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static void LogMultipleOnSpot(string message1, string? message2 = null, string? message3 = null, int message2Offset = 0,
+                                             ConsoleColor? color1 = null, ConsoleColor? color2 = null, ConsoleColor? color3 = null)
+        {
+            int x = Console.CursorLeft;
+            int y = Console.CursorTop;
+
+            // Message 1
+            Console.ForegroundColor = color1 ?? ConsoleColor.White;
+            Console.Write(message1);
+
+            Console.ForegroundColor = color2 ?? ConsoleColor.White;
+            Console.Write(message2);
+
+            Console.SetCursorPosition(message2Offset, y);
+
+            // Message 3
+            Console.ForegroundColor = color3 ?? ConsoleColor.White;
+            Console.Write(message3);
+            Console.SetCursorPosition(x, y);
+
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static void LogOnSpot(string message, ConsoleColor? color = null)
+        {
+            int x = Console.CursorLeft;
+            int y = Console.CursorTop;
+
+            if (color != null)
+            {
+                Console.ForegroundColor = color.Value;
+            }
+
+            Console.Write(message);
+            Console.SetCursorPosition(x, y);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
         public static void Log(string message, LogLevel level)
         {
             Tuple<string, ConsoleColor> tuple = GetColorByLogLevel(level);

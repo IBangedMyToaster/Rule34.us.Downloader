@@ -8,9 +8,7 @@ namespace Rule34.us.Downloader.Logic.Rule34
     {
         private readonly Func<string, string> LINK_IMAGE = (id) => $@"https://rule34.us/index.php?r=posts/view&id={id}";
         private readonly Func<string[], int, string> LINK_PAGE = (tags, pageCount) => $@"https://rule34.us/index.php?r=posts/index&q={tags.TagJoin("all")}&page={pageCount}";
-        private readonly WebUtilities web = new();
-        private readonly HtmlDocument doc = new();
-        private HtmlNode? contentChild;
+        private readonly WebUtilities webUtilities = new();
 
         /// <summary>
         /// Get all Ids with the specified Tags.
@@ -18,69 +16,34 @@ namespace Rule34.us.Downloader.Logic.Rule34
         /// <param name="tags"></param>
         /// <param name="pages"></param>
         /// <returns></returns>
-        public string[] GetAllIdsByTags(Tags.Tags tags)
+        public List<Content> GetAllIdsByTags(Tags.Tags tags, string? id = null)
         {
             int pages = 0;
-            List<string> ids = new();
+            List<Content> contentList = new List<Content>();
             string[]? requestedIds;
 
             do
             {
-                requestedIds = web.Request(LINK_PAGE(tags.Raw, pages));
+                requestedIds = webUtilities.Request(LINK_PAGE(tags.Raw, pages));
 
                 if (requestedIds == null || !requestedIds.Any())
                 {
                     break;
                 }
 
-                ids.AddRange(requestedIds);
+                // Used for Updating
+                if (id != null && !requestedIds.Select(rq => int.Parse(rq)).Min().ToString().IsBiggerThan(id))
+                {
+                    contentList.AddRange(requestedIds.TakeWhile(x => x.IsBiggerThan(id)).Select(id => new Content(id)));
+                    break;
+                }
+
+                contentList.AddRange(requestedIds.Select(id => new Content(id)));
                 pages++;
 
             } while (true);
 
-            return ids.ToArray();
-        }
-
-        /// <summary>
-        /// Get all Ids with the specified Tags until a specific id.
-        /// /// </summary>
-        /// <param name="id"></param>
-        /// <param name="tags"></param>
-        /// <param name="pages"></param>
-        /// <returns></returns>
-        public string[] GetAllIdsByTagsTill(string id, Tags.Tags tags)
-        {
-            int pages = 0;
-            List<string> ids = new();
-            string[]? requestedIds;
-
-            do
-            {
-                requestedIds = web.Request(LINK_PAGE(tags.Raw, pages));
-
-                if (requestedIds == null || !requestedIds.Any())
-                {
-                    break;
-                }
-
-                // Run: 1 / Time: 25422
-                // Run: 2 / Time: 21307
-                // Run: 3 / Time: 17115
-                // Run: 4 / Time: 19074
-                // Run: 5 / Time: 22905
-                // Average Time: 21164
-                if (!requestedIds.Select(rq => int.Parse(rq)).Min().ToString().IsBiggerThan(id))
-                {
-                    ids.AddRange(requestedIds.TakeWhile(x => x.IsBiggerThan(id)));
-                    break;
-                }
-                ids.AddRange(requestedIds);
-
-                pages++;
-
-            } while (true);
-
-            return ids.ToArray();
+            return contentList;
         }
 
         /// <summary>
@@ -88,36 +51,57 @@ namespace Rule34.us.Downloader.Logic.Rule34
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        public Dictionary<string, string> ConvertIdsToLinks(string[] ids)
+        public List<Content> GetLinks(List<Content> contentList)
         {
             Dictionary<string, string> links = new();
+            int totalCount = contentList.Count();
+            Task[] tasks = new Task[totalCount];
             int runs = 1;
-            int totalIds = ids.Count();
-            string link;
 
-            if (!ids.Any())
+            if (!contentList.Any())
             {
-                return links;
+                return contentList;
             }
 
-            foreach (string id in ids)
+            foreach (Content content in contentList)
             {
-                Logger.LogSimple($"[{runs}/{totalIds}] {LINK_IMAGE(id)}\n"); // Log
+                Logger.LogSimple($"[{runs}/{totalCount}] {LINK_IMAGE(content.Id)}\n"); // Log
 
-                web.LoadHTMLDocWithLink(doc, LINK_IMAGE(id));
+                tasks[runs - 1] = GetDownloadLinkAsync(content);
 
-                contentChild = doc.DocumentNode.SelectSingleNode("//div[@class='content_push']")
-                                               .FirstChild.NextSibling;
-
-                link = contentChild.Name == "img"
-                    ? contentChild.GetAttributeValue<string>("src", "n/a")
-                    : contentChild.ChildNodes[1].GetAttributeValue<string>("src", "n/a");
-
-                links.Add(id, link);
                 runs++;
             }
 
-            return links;
+            ProgressBar progressBar = new ProgressBar(totalCount);
+            Logger.LogSimple("\nGetting Links\n");
+            tasks.ForEachCompleted((finished, total) => progressBar.Update(finished, $"{finished} Files / {total} Files"));
+            Console.WriteLine();
+
+            return contentList;
+        }
+
+        /// <summary>
+        /// Adds the link pointing to the Content with the given ID to links.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="links"></param>
+        /// <returns></returns>
+        private Task GetDownloadLinkAsync(Content content)
+        {
+            HttpClient client = new HttpClient();
+            HtmlDocument doc = new HtmlDocument();
+
+            return Task.Run(async () =>
+            {
+                string html = await client.GetStringAsync(LINK_IMAGE(content.Id));
+                doc.LoadHtml(html);
+
+                var element = doc.DocumentNode.SelectSingleNode("//div[@class='content_push']").FirstChild.NextSibling;
+
+                content.Url = element.Name == "img"
+                            ? element.GetAttributeValue<string>("src", "n/a")
+                            : element.ChildNodes[1].GetAttributeValue<string>("src", "n/a");
+            });
         }
 
         /// <summary>
@@ -126,40 +110,26 @@ namespace Rule34.us.Downloader.Logic.Rule34
         /// <param name="path"></param>
         /// <param name="idLinkPairs"></param>
         /// <returns></returns>
-        public Task Download(string path, Dictionary<string, string> idLinkPairs)
+        public Task Download(string path, List<Content> contentList)
         {
-            List<Task> tasks = new();
-            KeyValuePair<string, string> kvp;
+            Task[] tasks = new Task[contentList.Count()];
 
-            if (!idLinkPairs.Any())
+            if (!contentList.Any())
             {
                 return Task.CompletedTask;
             }
 
-            for (int i = 0; i < idLinkPairs.Count(); i++)
+            Logger.LogSimple("\nDownloading Content\n");
+
+            for (int i = 0; i < contentList.Count(); i++)
             {
-                kvp = idLinkPairs.ElementAt(i);
-                tasks.Add(WebUtilities.Download(kvp.Value, Path.Combine(path, kvp.Key)));
+                tasks[i] = WebUtilities.Download(path, contentList.ElementAt(i));
             }
 
-            int x = Console.CursorLeft;
-            int y = Console.CursorTop;
-            int tasksCount = tasks.Count();
-
-            Task.Run(async () =>
-            {
-                int total = 0;
-
-                while (tasks.Any())
-                {
-                    Task finishedTask = await Task.WhenAny(tasks);
-                    _ = tasks.Remove(finishedTask);
-                    total++;
-                    Logger.LogSimpleAt($"Downloading [{total}/{tasksCount}]", x, y, ConsoleColor.Yellow);
-                }
-
-                Console.WriteLine();
-            }).Wait();
+            ProgressBar progressBar = new ProgressBar(contentList.Count());
+            tasks.ForEachCompleted((finished, total) => progressBar.Update(finished, $"{finished} Files / {total} Files"));
+            Console.WriteLine();
+            //tasks.ForEachCompleted((finished, total) => Logger.LogOnSpot($"Downloading [{finished}/{total}]", ConsoleColor.Yellow));
 
             return Task.CompletedTask;
         }

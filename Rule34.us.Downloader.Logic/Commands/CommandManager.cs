@@ -14,7 +14,7 @@ namespace Rule34.us.Downloader.Logic.Commands
 
             if (command && valid)
                 return true;
-            else if(!command)
+            else if (!command)
                 return false;
 
             return null;
