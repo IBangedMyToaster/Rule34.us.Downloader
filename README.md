@@ -8,7 +8,7 @@
 </p>
 
 # What is Rule34.us Downloader
-Rule34.us Downloader allows you to download and maintain content present in [Rule34.us](https://rule34.us/) and is basically an rule34.us version of [RaulS963's Downloader](https://github.com/RaulS963/Rule34-Downloader) for [Rule34.xxx](https://rule34.xxx/).
+Rule34.us Downloader allows you to download and maintain content present on [Rule34.us](https://rule34.us/) and is basically an rule34.us version of [RaulS963's Downloader](https://github.com/RaulS963/Rule34-Downloader) for [Rule34.xxx](https://rule34.xxx/).
 For more Information about my choice of website see [Difference between Rule34.us and Rule34.xxx](https://github.com/IBangedMyToaster/Rule34.us.Downloader#difference-between-rule34us-and-rule34xxx)
 
 # Installation
