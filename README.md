@@ -14,7 +14,7 @@ For more Information about my choice of website see [Difference between Rule34.u
 # Installation
 After downloading the latest Version the tool is ready to run, upon starting it will look like this:
 
-![Pasted image 20230514204436](https://github.com/IBangedMyToaster/Rule34.us.Downloader/assets/43365830/ccc1130b-918a-4460-9b20-c55c50399073) 
+![1](https://github.com/user-attachments/assets/698d5d87-45b9-478c-bc67-2e95bda8966d)
 
 # Setup
 On startup the file "~\\AppData\\Roaming\\ScrewsTools\\Rule34.us\\rule34.json" (if not already existent) will be created.
@@ -50,14 +50,17 @@ Example 2:
 Enter Tags: --download stable_diffusion nude
 ```
 
-![2023-05-15 13-43-32_1](https://github.com/IBangedMyToaster/Rule34.us.Downloader/assets/43365830/1d3f8aa0-35ff-4730-afcd-7019e1bac787)
+![2](https://github.com/user-attachments/assets/ad1498a9-e1e4-4b9d-bc1d-a2f054429ea2)
 
-![Pasted image 20230515145101](https://github.com/IBangedMyToaster/Rule34.us.Downloader/assets/43365830/8e6912ea-1c3d-4be7-a394-aa89d2f3d8ad)
+
+![3](https://github.com/user-attachments/assets/bb367448-f288-44d6-8231-c18f5f3a948d)
+
 
 It is recommended to use `Enter Tags: --show [Tags]` in Order to know how many Files you will be downloading.
 In this Example also shows how exactly ShadowTags work, in green we have the input by the user (this will be the foldername), blue are ShadowTags, which are applyed to every download in the background and finally red shows the total amount of Elements found with green + blue together.
 
-![Screenshot 2023-05-15 133003](https://github.com/IBangedMyToaster/Rule34.us.Downloader/assets/43365830/5fd91467-41eb-403f-b32a-bb0ce1b9afe4)
+![4-marked](https://github.com/user-attachments/assets/f0aebbdc-2f23-458c-9a0a-b7bb56c5577d)
+
 
 ## Maintain Content Libraries
 Following Commands help you maintain the Library:
