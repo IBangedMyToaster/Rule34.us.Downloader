@@ -43,8 +43,8 @@ namespace Rule34.us.Downloader.Logic.Commands
         {
             return idCount switch
             {
-                0 => () => Logger.LogSimple($"No Elements with were found with the given Tags!\n\n", ConsoleColor.Red),
-                _ => () => Logger.LogSimple($"Saved {idCount} Elements in \"{tagDirectory?.Name}\".\n\n", ConsoleColor.Yellow),
+                0 => () => Logger.LogSimple($"No elements with the given tags were found !\n\n", ConsoleColor.Red),
+                _ => () => Logger.LogSimple($"Saved {idCount} elements in \"{tagDirectory?.Name}\".\n\n", ConsoleColor.Yellow),
             };
         }
     }

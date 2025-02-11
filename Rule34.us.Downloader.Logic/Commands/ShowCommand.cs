@@ -30,8 +30,8 @@ namespace Rule34.us.Downloader.Logic.Commands
         {
             return idCount switch
             {
-                1 => () => Logger.LogSimple($"element with the given Tags\n\n", ConsoleColor.Yellow),
-                _ => () => Logger.LogSimple($"elements with the given Tags\n\n", ConsoleColor.Yellow),
+                1 => () => Logger.LogSimple($"element with the given tags\n\n", ConsoleColor.Yellow),
+                _ => () => Logger.LogSimple($"elements with the given tags\n\n", ConsoleColor.Yellow),
             };
         }
     }

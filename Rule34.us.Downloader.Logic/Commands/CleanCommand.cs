@@ -20,7 +20,7 @@ namespace Rule34.us.Downloader.Logic.Commands
             {
                 if (!TagDirectory.Exists(ConfigManager.Configuration, Tags))
                 {
-                    Logger.LogSimple($"The Folder \"{(string.Join(" ", Tags.TrimmedInput()))}\" does not Exist!\n", ConsoleColor.Red);
+                    Logger.LogSimple($"The folder \"{(string.Join(" ", Tags.TrimmedInput()))}\" does not exist!\n", ConsoleColor.Red);
                     return;
                 }
 
@@ -64,7 +64,7 @@ namespace Rule34.us.Downloader.Logic.Commands
         {
             return idCount switch
             {
-                0 => () => Logger.LogSimple($"\"{directory.Name}\" was Clean on Execution.\n\n", ConsoleColor.Green),
+                0 => () => Logger.LogSimple($"\"{directory.Name}\" was clean on execution.\n\n", ConsoleColor.Green),
                 1 => () => Logger.LogSimple($"Cleaned \"{directory.Name}\" and removed {idCount} element\n\n", ConsoleColor.Yellow),
                 _ => () => Logger.LogSimple($"Cleaned \"{directory.Name}\" and removed {idCount} elements\n\n", ConsoleColor.Yellow),
             };

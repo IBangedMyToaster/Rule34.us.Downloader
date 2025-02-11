@@ -20,7 +20,7 @@ namespace Rule34.us.Downloader.Logic.Commands
             {
                 if (!TagDirectory.Exists(ConfigManager.Configuration, Tags))
                 {
-                    Logger.LogSimple($"The Folder \"{(string.Join(" ", Tags.TrimmedInput()))}\" does not Exist!\n", ConsoleColor.Red);
+                    Logger.LogSimple($"The folder \"{(string.Join(" ", Tags.TrimmedInput()))}\" does not exist!\n", ConsoleColor.Red);
                     return;
                 }
 
