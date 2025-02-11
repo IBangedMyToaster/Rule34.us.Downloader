@@ -3,5 +3,6 @@ bin/
 obj/
 Properties/
 publish/
+SiteChanges/
 *.user
 *.zip
