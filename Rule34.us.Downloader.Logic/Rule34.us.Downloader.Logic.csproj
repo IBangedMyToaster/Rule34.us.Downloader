@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Version>$(verison)</Version>
+    <Authors>IBangedMyToaster</Authors>
+    <RepositoryUrl>https://github.com/IBangedMyToaster/Rule34.us.Downloader</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <SignAssembly>False</SignAssembly>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.72" />
+  </ItemGroup>
+
+</Project>
