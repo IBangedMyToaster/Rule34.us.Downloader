@@ -96,7 +96,7 @@ namespace Rule34.us.Downloader.Logic.Rule34
                 string html = await client.GetStringAsync(LINK_IMAGE(content.Id));
                 doc.LoadHtml(html);
 
-                var element = doc.DocumentNode.SelectSingleNode("//div[@class='content_push']").FirstChild.NextSibling;
+                var element = doc.DocumentNode.SelectSingleNode("//div[@class='content_push']").ChildNodes[4];
 
                 content.Url = element.Name == "img"
                             ? element.GetAttributeValue<string>("src", "n/a")
