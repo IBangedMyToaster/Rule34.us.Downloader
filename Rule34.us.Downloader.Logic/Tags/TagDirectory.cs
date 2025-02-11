@@ -14,9 +14,9 @@ namespace Rule34.us.Downloader.Logic.Tags
             Tags = TagDirectory.GetTagsByPath(OriginalPath);
         }
 
-        public List<string> GetFilenames()
+        public string[] GetFilenames()
         {
-            return Directory.GetFiles(OriginalPath).Select(file => Path.GetFileNameWithoutExtension(file)).ToList();
+            return Directory.GetFiles(OriginalPath).Select(file => Path.GetFileNameWithoutExtension(file)).ToArray();
         }
 
         public string[] GetFullFilenames()
@@ -32,7 +32,10 @@ namespace Rule34.us.Downloader.Logic.Tags
 
         public string GetLastId()
         {
-            return GetFilenames().Select(id => int.Parse(id)).Max().ToString() ?? throw new ArgumentNullException("Last id in Folder was null.");
+            return GetFilenames().Where(id =>
+            {
+                return int.TryParse(id, out int _);
+            }).Select(x => int.Parse(x)).Max().ToString();
         }
 
         // Static
