@@ -1,5 +1,6 @@
-Rule34.us.Downloader/Properties/
-Rule34.us.Downloader.View/Properties/
-/Rule34.us.Downloader.Logic/Rule34.us.Downloader.Logic.csproj
-/Rule34.us.Downloader.View/Rule34.us.Downloader.View.csproj
-/Rule34.us.Downloader.sln
+.vs
+bin/
+obj/
+Properties/
+*.user
+*.zip
