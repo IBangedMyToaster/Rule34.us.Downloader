@@ -45,7 +45,7 @@ namespace Rule34.us.Downloader.View
             }
             catch (Exception e)
             {
-                Logger.CrashLog(Path.Combine(PathManager.AppData, "creashReport.log"), e.Message);
+                Logger.CrashLog(Path.Combine(PathManager.AppData, "creashReport.log"), String.Join(Environment.NewLine, e.Message, e.InnerException, e.StackTrace, e.TargetSite));
             }
         }
 
