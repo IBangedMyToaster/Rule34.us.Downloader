@@ -106,8 +106,11 @@ namespace Rule34.us.Downloader.Logic.Rule34
 
                 web.LoadHTMLDocWithLink(doc, LINK_IMAGE(id));
 
+                //contentChild = doc.DocumentNode.SelectSingleNode("//div[@class='content_push']")
+                //                               .FirstChild.NextSibling;
+
                 contentChild = doc.DocumentNode.SelectSingleNode("//div[@class='content_push']")
-                                               .FirstChild.NextSibling;
+                                               .ChildNodes[4];
 
                 link = contentChild.Name == "img"
                     ? contentChild.GetAttributeValue<string>("src", "n/a")
