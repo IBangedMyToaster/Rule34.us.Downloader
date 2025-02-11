@@ -8,6 +8,7 @@ namespace Rule34.us.Downloader.View
     {
         private static void Main(string[] args)
         {
+            Console.Title = "Rule34.us Downloader";
             ConfigManager configManager = new();
             Directory.CreateDirectory(configManager.GetSavePath);
             CommandManager commandManager = new();
