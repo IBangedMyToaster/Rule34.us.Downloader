@@ -1,4 +1,5 @@
-﻿using Rule34.us.Downloader.Logic.Utility;
+﻿using Rule34.us.Downloader.Logic.Extensions;
+using Rule34.us.Downloader.Logic.Utility;
 
 namespace Rule34.us.Downloader.Logic.Tags
 {
@@ -48,7 +49,10 @@ namespace Rule34.us.Downloader.Logic.Tags
 
             //return testArray.Any() ? testArray.Max().ToString() : null;
 
-            return GetFilenames().Select(id => int.Parse(id)).Max().ToString() ?? throw new ArgumentNullException("Corrupted Filename found.");
+            return GetFilenames().Where(s => s.IsInteger())
+                                 .Select(id => int.Parse(id))
+                                 .Max().ToString()
+                                 ?? throw new ArgumentNullException("Corrupted Filename found.");
         }
 
         // Static

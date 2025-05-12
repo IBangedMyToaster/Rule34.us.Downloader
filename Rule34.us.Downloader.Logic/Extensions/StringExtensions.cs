@@ -37,5 +37,9 @@
         {
             return int.Parse(val1) > int.Parse(val2);
         }
+        public static bool IsInteger(this string value)
+        {
+            return int.TryParse(value, out int _);
+        }
     }
 }
