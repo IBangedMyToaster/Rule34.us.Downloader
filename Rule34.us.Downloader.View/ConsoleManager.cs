@@ -11,7 +11,7 @@ namespace Rule34.us.Downloader.View
         private const string title = "\r\n██████╗ ██╗   ██╗██╗     ███████╗██████╗ ██╗  ██╗   ██╗   ██╗███████╗\r\n██╔══██╗██║   ██║██║     ██╔════╝╚════██╗██║  ██║   ██║   ██║██╔════╝\r\n██████╔╝██║   ██║██║     █████╗   █████╔╝███████║   ██║   ██║███████╗\r\n██╔══██╗██║   ██║██║     ██╔══╝   ╚═══██╗╚════██║   ██║   ██║╚════██║\r\n██║  ██║╚██████╔╝███████╗███████╗██████╔╝     ██║██╗╚██████╔╝███████║\r\n╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚══════╝╚═════╝      ╚═╝╚═╝ ╚═════╝ ╚══════╝\r\n";
 
         private const string author = "IBangedMyToaster";
-        private const string version = "4.0.0";
+        private const string version = "4.0.1";
         private const string site = @"https://rule34.us";
         private const string github = @"https://github.com/IBangedMyToaster/Rule34.us.Downloader";
         private const string description = $"Rule34 downloader allows you to download all the images present in {site} site\r\nJust enter the appropriate tags and it will download all images of that tag into your computer!\r\nFor tags follow the same convention that used in Rule34.\r\nFor more information visit the {github}";
