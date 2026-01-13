@@ -1,10 +1,13 @@
 <p align="center">
  <img alt="GitHub " src="https://img.shields.io/github/last-commit/IBangedMyToaster/Rule34.us.Downloader">
+ <img alt="GitHub " src="https://img.shields.io/github/actions/workflow/status/IBangedMyToaster/Rule34.us.Downloader/release.yaml?label=Build">
+ <img alt="GitHub " src="https://img.shields.io/github/v/release/IBangedMyToaster/Rule34.us.Downloader?label=Version">
  <img alt="GitHub " src="https://img.shields.io/github/repo-size/IBangedMyToaster/Rule34.us.Downloader"> 
- <img alt="GitHub " src="https://img.shields.io/github/downloads/IBangedMyToaster/Rule34.us.Downloader/total">
  <img alt="GitHub " src="https://img.shields.io/github/license/IBangedMyToaster/Rule34.us.Downloader">
  <img alt="GitHub " src="https://img.shields.io/github/issues-raw/IBangedMyToaster/Rule34.us.Downloader">
- <img alt="GitHub " src="https://img.shields.io/github/issues-closed-raw/IBangedMyToaster/Rule34.us.Downloader">
+<br>
+ <img alt="GitHub " src="https://img.shields.io/github/downloads/IBangedMyToaster/Rule34.us.Downloader/total?label=downloads@all">
+ <img alt="GitHub " src="https://img.shields.io/github/downloads/IBangedMyToaster/Rule34.us.Downloader/latest/total">
 </p>
 
 # What is Rule34.us Downloader
