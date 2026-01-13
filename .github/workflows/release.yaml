@@ -23,7 +23,7 @@ jobs:
         run: dotnet restore
 
       - name: Publish self-contained single file (x64)
-        run: dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:PublishTrimmed=true -o ./publish
+        run: dotnet publish ./Rule34.us.Downloader.View/Rule34.us.Downloader.View.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:PublishTrimmed=true -o ./publish
 
       - name: Zip published files
         run: Compress-Archive -Path ./publish/* -DestinationPath ./app.zip
