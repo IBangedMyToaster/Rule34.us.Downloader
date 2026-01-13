@@ -1,6 +1,7 @@
 ﻿using HtmlAgilityPack;
 using Rule34.us.Downloader.Logic.Extensions;
 using Rule34.us.Downloader.Logic.Utility;
+using System.Diagnostics;
 
 namespace Rule34.us.Downloader.Logic.Rule34
 {
@@ -96,11 +97,14 @@ namespace Rule34.us.Downloader.Logic.Rule34
                 string html = await client.GetStringAsync(LINK_IMAGE(content.Id));
                 doc.LoadHtml(html);
 
-                var element = doc.DocumentNode.SelectSingleNode("//div[@class='content_push']").ChildNodes[4];
+                var element = doc.DocumentNode.SelectSingleNode("//div[@class='content_push']").ChildNodes.FirstOrDefault(node => (node.Name == "img" || node.Name == "video"));
+
+                if(element == null)
+                    return;
 
                 content.Url = element.Name == "img"
                             ? element.GetAttributeValue<string>("src", "n/a")
-                            : element.ChildNodes[1].GetAttributeValue<string>("src", "n/a");
+                            : element.ChildNodes.First(n => n.GetAttributeValue<string>("type", "n/a") == "video/webm").GetAttributeValue<string>("src", "n/a");
             });
         }
 
@@ -114,8 +118,16 @@ namespace Rule34.us.Downloader.Logic.Rule34
         {
             Task[] tasks = new Task[contentList.Count()];
 
+            contentList = contentList.Where(e => e is not null).ToList();
+
             if (!contentList.Any())
             {
+                return Task.CompletedTask;
+            }
+
+            if(contentList.All(c => string.IsNullOrWhiteSpace(c.Url)))
+            {
+                Logger.Log($"Error: No download-links were found! Reason for this are probably changes on the Website.\nPlease open an issue on github https://github.com/IBangedMyToaster/Rule34.us.Downloader/issues", LogLevel.Error);
                 return Task.CompletedTask;
             }
 
