@@ -69,6 +69,7 @@ namespace Rule34.us.Downloader.Logic.Tags
         public static TagDirectory GetTagDirectoryByTags(Config config, Tags tags)
         {
             string savePath = config.SavePath;
+            Directory.CreateDirectory(savePath);
             string directoryName = GetDirectoryNameByTags(config, tags);
 
             TagDirectory tagDirectory = new(Directory.GetDirectories(savePath).FirstOrDefault(dir => new DirectoryInfo(dir).Name == directoryName)
