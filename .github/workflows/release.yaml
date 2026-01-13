@@ -26,11 +26,11 @@ jobs:
         run: dotnet publish ./Rule34.us.Downloader.View/Rule34.us.Downloader.View.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true -o ./publish
 
       - name: Zip published files
-        run: Compress-Archive -Path ./publish/* -DestinationPath ./app.zip
+        run: Compress-Archive -Path ./publish/* -DestinationPath ./Rule34.us.Downloader.zip
 
       - name: Create Release and Upload Asset
         uses: softprops/action-gh-release@v1
         with:
-          files: ./app.zip
+          files: ./Rule34.us.Downloader.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
