@@ -1,6 +1,7 @@
 ﻿using Rule34.us.Downloader.Logic.Commands;
 using Rule34.us.Downloader.Logic.Tags;
 using Rule34.us.Downloader.Logic.Utility;
+using System.Text;
 
 namespace Rule34.us.Downloader.View
 {
@@ -9,6 +10,7 @@ namespace Rule34.us.Downloader.View
         private static void Main(string[] args)
         {
             Console.Title = "Rule34.us Downloader";
+            Console.OutputEncoding = Encoding.UTF8;
             ConfigManager configManager = new();
             Directory.CreateDirectory(configManager.GetSavePath);
             CommandManager commandManager = new();
