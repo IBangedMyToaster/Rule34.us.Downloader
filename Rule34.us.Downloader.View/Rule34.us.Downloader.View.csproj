@@ -10,10 +10,12 @@
     <RepositoryUrl>https://github.com/IBangedMyToaster/Rule34.us.Downloader</RepositoryUrl>
     <SignAssembly>False</SignAssembly>
     <Authors>IBangedMyToaster</Authors>
+	<PublishSingleFile>true</PublishSingleFile>
+	<SelfContained>true</SelfContained>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="favicon.ico" />
+    <Content Include="favicon.ico"/>
   </ItemGroup>
 
   <ItemGroup>
