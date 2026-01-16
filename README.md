@@ -10,10 +10,6 @@
  <img alt="GitHub " src="https://img.shields.io/github/downloads/IBangedMyToaster/Rule34.us.Downloader/latest/total">
 </p>
 
-# What is Rule34.us Downloader
-Rule34.us Downloader allows you to download and maintain content present on [Rule34.us](https://rule34.us/) and is basically an rule34.us version of [RaulS963's Downloader](https://github.com/RaulS963/Rule34-Downloader) for [Rule34.xxx](https://rule34.xxx/).
-For more Information about my choice of website see [Difference between Rule34.us and Rule34.xxx](https://github.com/IBangedMyToaster/Rule34.us.Downloader#difference-between-rule34us-and-rule34xxx)
-
 > [!CAUTION]
 > This project is provided **for educational and research purposes only**.
 >
@@ -26,6 +22,10 @@ For more Information about my choice of website see [Difference between Rule34.u
 > - The author(s) of this project assume **no liability** for misuse, legal consequences, or any damages resulting from its use.
 >
 > If you do not agree with these terms, **do not use this software**.
+
+# What is Rule34.us Downloader
+Rule34.us Downloader allows you to download and maintain content present on [Rule34.us](https://rule34.us/) and is basically an rule34.us version of [RaulS963's Downloader](https://github.com/RaulS963/Rule34-Downloader) for [Rule34.xxx](https://rule34.xxx/).
+For more Information about my choice of website see [Difference between Rule34.us and Rule34.xxx](https://github.com/IBangedMyToaster/Rule34.us.Downloader#difference-between-rule34us-and-rule34xxx)
 
 # Installation
 After downloading the latest Version the tool is ready to run, upon starting it will look like this:
