@@ -1,6 +1,7 @@
 ﻿using Rule34.us.Downloader.Logic.Commands;
 using Rule34.us.Downloader.Logic.Tags;
 using Rule34.us.Downloader.Logic.Utility;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace Rule34.us.Downloader.View
@@ -89,6 +90,8 @@ namespace Rule34.us.Downloader.View
                                           (tags) => _ = new CleanCommand(tags, configManager)));
             commandManager.Add(new Command("show", "Show the Amount of Content available with the given Tags.",
                                           (tags) => _ = new ShowCommand(tags)));
+            commandManager.Add(new Command("debug", "Download a small set of specified files. Used for testing.",
+                                          (tags) => _ = new DebugCommand(tags, configManager)));
         }
     }
 }
