@@ -58,7 +58,7 @@ namespace Rule34.us.Downloader.Logic.Tags
         // Static
         public static string ConvertTagsToDirName(Tags tags)
         {
-            return string.Join(" & ", tags.TrimmedInput());
+            return string.Join(" & ", tags.TrimmedInput()).Replace(':', ';');
         }
 
         public static TagDirectory[] GetAllTagDirectories(Config config)
@@ -99,7 +99,7 @@ namespace Rule34.us.Downloader.Logic.Tags
 
         internal static Tags GetTagsByPath(string path)
         {
-            return new Tags(new DirectoryInfo(path).Name.Split(" & ").Select(tag => tag.Trim()).ToArray());
+            return new Tags(new DirectoryInfo(path).Name.Split(" & ").Select(tag => tag.Trim().Replace(';', ':')).ToArray());
         }
     }
 }

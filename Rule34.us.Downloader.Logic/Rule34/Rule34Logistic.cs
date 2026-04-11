@@ -2,6 +2,7 @@
 using Rule34.us.Downloader.Logic.Extensions;
 using Rule34.us.Downloader.Logic.Utility;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Rule34.us.Downloader.Logic.Rule34
 {
@@ -91,10 +92,11 @@ namespace Rule34.us.Downloader.Logic.Rule34
         {
             HttpClient client = new HttpClient();
             HtmlDocument doc = new HtmlDocument();
+            string referer = LINK_IMAGE(content.Id);
 
             return Task.Run(async () =>
             {
-                string html = await client.GetStringAsync(LINK_IMAGE(content.Id));
+                string html = await client.GetStringAsync(referer);
                 doc.LoadHtml(html);
 
                 var element = doc.DocumentNode.SelectSingleNode("//div[@class='content_push']").ChildNodes.FirstOrDefault(node => (node.Name == "img" || node.Name == "video"));
@@ -102,9 +104,11 @@ namespace Rule34.us.Downloader.Logic.Rule34
                 if(element == null)
                     return;
 
+                content.Referer = new Uri(referer);
                 content.Url = element.Name == "img"
                             ? element.GetAttributeValue<string>("src", "n/a")
                             : element.ChildNodes.First(n => n.GetAttributeValue<string>("type", "n/a") == "video/webm").GetAttributeValue<string>("src", "n/a");
+
             });
         }
 
@@ -135,6 +139,7 @@ namespace Rule34.us.Downloader.Logic.Rule34
 
             for (int i = 0; i < contentList.Count(); i++)
             {
+                //Logger.Log($"{contentList[i].Id} | {contentList[i].Url}", LogLevel.Debug);
                 tasks[i] = WebUtilities.Download(path, contentList.ElementAt(i));
             }
 

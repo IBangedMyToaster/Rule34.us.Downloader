@@ -13,7 +13,10 @@ namespace Rule34.us.Downloader.Logic.Utility
         public static async Task Download(string path, Content content)
         {
             using HttpClient client = new();
-            await client.DownloadFileTaskAsync(content.Uri, Path.Combine(path, content.Filename));
+            {
+                client.DefaultRequestHeaders.Referrer = content.Referer;
+                await client.DownloadFileTaskAsync(content.Uri, Path.Combine(path, content.Filename));
+            }
         }
 
         internal string[]? Request(string link)
