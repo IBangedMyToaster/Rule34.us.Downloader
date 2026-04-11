@@ -10,7 +10,7 @@
  <img alt="GitHub " src="https://img.shields.io/github/downloads/IBangedMyToaster/Rule34.us.Downloader/latest/total">
 </p>
 
-> [!CAUTION]
+> [!WARNING]
 > This project is provided **for educational and research purposes only**.
 >
 > It is **not intended to promote, distribute, or facilitate access to explicit or adult content**.
