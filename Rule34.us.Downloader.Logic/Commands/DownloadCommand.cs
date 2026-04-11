@@ -1,17 +1,18 @@
 ﻿using Rule34.us.Downloader.Logic.Rule34;
-using Rule34.us.Downloader.Logic.Tags;
+
 using Rule34.us.Downloader.Logic.Utility;
+using Rule34.us.Downloader.Logic.Tags;
 
 namespace Rule34.us.Downloader.Logic.Commands
 {
     public class DownloadCommand
     {
-        public Tags.Tags Tags { get; private set; }
+        public Tags.Tags Tag { get; private set; }
         public ConfigManager ConfigManager { get; }
 
         public DownloadCommand(Tags.Tags tags, ConfigManager configManager)
         {
-            Tags = tags ?? throw new ArgumentNullException(nameof(tags));
+            this.Tag = tags ?? throw new ArgumentNullException(nameof(tags));
             ConfigManager = configManager;
             TagDirectory? tagDirectory = Execute(out int idCount);
             LogUpdateProgress(idCount, tagDirectory).Invoke();  // Log Result
@@ -23,8 +24,8 @@ namespace Rule34.us.Downloader.Logic.Commands
             TagDirectory? tagDirectory = null;
 
             // Get all ids by tags
-            Logger.LogSimple($"Downloading {string.Join(" ", Tags.Raw)}...\n", ConsoleColor.Yellow); // Log Checking
-            List<Content> contentList = logistic.GetAllIdsByTags(Tags);
+            Logger.LogSimple($"Downloading {string.Join(" ", this.Tag.Raw)}...\n", ConsoleColor.Yellow); // Log Checking
+            List<Content> contentList = logistic.GetAllIdsByTags(this.Tag);
             contentCount = contentList.Count();
 
             if (!contentList.Any())
@@ -34,7 +35,7 @@ namespace Rule34.us.Downloader.Logic.Commands
             logistic.GetLinks(contentList);
 
             // Download all files by links and save in folder
-            tagDirectory = TagDirectory.GetTagDirectoryByTags(ConfigManager.Configuration, Tags);
+            tagDirectory = TagDirectory.GetTagDirectoryByTags(ConfigManager.Configuration, this.Tag);
             logistic.Download(tagDirectory.OriginalPath, contentList);
             return tagDirectory;
         }
