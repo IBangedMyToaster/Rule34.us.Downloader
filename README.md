@@ -209,6 +209,9 @@ Enter Tags: --clean
 # Troubleshooting
 In case you run into a bug or have Problems with any of the Features i encourage you to open an issue. I will gladly take a look at the problem and solve it.
 
+## Why webm instead of mp4
+The subdomain **video-cdn1.rule34.us** (used for the mp4 version) went offline around 2025ish and has remained so for quiet some time now.
+
 ## Issue that can not be fixed
 At the end of the day, the app has a very delicate and unreliable dependency. The artist/uploader decides what tags a file has and becomes the biggest wildcard when it comes to consistent results. As someone with roughly 50k files, I can say that around 90% of them are tagged quite accurately; it's the remaining 10% that can cause issues. Personally, I assign shadow tags to artists with poor tagging skills.
 
