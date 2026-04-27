@@ -1,6 +1,8 @@
 name: Scheduled Smoke Test (Latest Release)
 
 on:
+  release:
+      types: [published]
   schedule:
     - cron: "15 3 * * *"
   workflow_dispatch: {}
