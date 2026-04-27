@@ -1,0 +1,40 @@
+name: Scheduled Smoke Test (Latest Release)
+
+on:
+  schedule:
+    - cron: "15 3 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  smoke-test:
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+        # Get the newest validation script
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+        # Download and extract the latest release
+      - name: Download latest release + extract
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: IBangedMyToaster/Rule34.us.Downloader
+          latest: true
+          fileName: "Rule34.us.Downloader.zip"
+          out-file-path: "release"
+          extract: true
+          extract-path: "app"
+
+      - name: List extracted files
+        shell: pwsh
+        run: |
+          Get-ChildItem -Recurse -Force .\app | Select-Object FullName
+
+      - name: Run Downloader (Debug Command)
+        shell: pwsh
+        env:
+          OUT_DIR: ${{ github.workspace }}\download_output
+        run: |
+            .\"rule34.us Downloader.exe" --debug
+            ls
