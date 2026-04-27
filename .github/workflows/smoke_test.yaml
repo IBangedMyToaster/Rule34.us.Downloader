@@ -28,20 +28,12 @@ jobs:
           extract: true
           extract-path: "app"
 
-      - name: List extracted files
-        shell: pwsh
-        run: |
-          cd app
-          ls
-
       - name: Download test files
         shell: pwsh
         run: |
+          cd app
           "& '.\rule34.us Downloader.exe' --debug"
-      
-      - name: List extracted files
-        shell: pwsh
-        run: ls
+          ls
       # - name: Run Downloader (Debug Command)
       #   shell: pwsh
       #   env:
