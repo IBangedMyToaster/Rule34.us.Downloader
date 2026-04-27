@@ -58,6 +58,7 @@ namespace Rule34.us.Downloader.Logic.Utility
         public void MockConfig()
         {
             this.Configuration.SavePath = Path.Combine(Directory.GetCurrentDirectory(), "Images");
+            PathManager.ChangeAppData(Directory.GetCurrentDirectory().ToString());
         }
     }
 }

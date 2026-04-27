@@ -1,4 +1,6 @@
-﻿namespace Rule34.us.Downloader.Logic.Utility
+﻿using System.Runtime.CompilerServices;
+
+namespace Rule34.us.Downloader.Logic.Utility
 {
     public struct PathManager
     {
@@ -14,6 +16,12 @@
         public static string PathInPictures(string file)
         {
             return Path.Combine(Pictures, file);
+        }
+
+        [Obsolete("Used for debugging only")]
+        public static void ChangeAppData(string value)
+        {
+            AppData = value;
         }
     }
 }
