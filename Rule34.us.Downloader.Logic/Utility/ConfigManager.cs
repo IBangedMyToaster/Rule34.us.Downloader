@@ -53,5 +53,11 @@ namespace Rule34.us.Downloader.Logic.Utility
 
             return val;
         }
+
+        [Obsolete("This method should only be used for the debug command! Nowhere else")]
+        public void MockConfig()
+        {
+            this.Configuration.SavePath = Path.Combine(Directory.GetCurrentDirectory(), "Images");
+        }
     }
 }
