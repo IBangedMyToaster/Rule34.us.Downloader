@@ -33,10 +33,16 @@ jobs:
         run: |
           Get-ChildItem -Recurse -Force .\app | Select-Object FullName
 
-      - name: Run Downloader (Debug Command)
+      - name: Download test files
         shell: pwsh
-        env:
-          OUT_DIR: ${{ github.workspace }}\download_output
         run: |
-            .\"rule34.us Downloader.exe" --debug
             ls
+            .\"app/rule34.us Downloader.exe" --debug
+
+      # - name: Run Downloader (Debug Command)
+      #   shell: pwsh
+      #   env:
+      #     OUT_DIR: ${{ github.workspace }}\download_output
+      #   run: |
+      #       ls
+      #       .\"app/rule34.us Downloader.exe" --debug
