@@ -31,15 +31,17 @@ jobs:
       - name: List extracted files
         shell: pwsh
         run: |
-          Get-ChildItem -Recurse -Force .\app | Select-Object FullName
+          cd app
+          ls
 
       - name: Download test files
         shell: pwsh
         run: |
-            cd app
-            & '.\rule34.us Downloader.exe' --debug
-            ls
-
+          "& '.\rule34.us Downloader.exe' --debug"
+      
+      - name: List extracted files
+        shell: pwsh
+        run: ls
       # - name: Run Downloader (Debug Command)
       #   shell: pwsh
       #   env:
