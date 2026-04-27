@@ -37,8 +37,7 @@ jobs:
         shell: pwsh
         run: |
             cd app
-            ls
-            .\"rule34.us Downloader.exe" --debug
+            & '.\rule34.us Downloader.exe' --debug
             ls
 
       # - name: Run Downloader (Debug Command)
