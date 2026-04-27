@@ -30,10 +30,11 @@ jobs:
 
       - name: Download test files
         shell: pwsh
+        working-directory: app
         run: |
-          cd app
-          "& '.\rule34.us Downloader.exe' --debug"
+          & ".\rule34.us Downloader.exe" --debug
           ls
+          
       # - name: Run Downloader (Debug Command)
       #   shell: pwsh
       #   env:
