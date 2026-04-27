@@ -89,7 +89,7 @@ namespace Rule34.us.Downloader.View
             commandManager.Add(new Command("clean", "Check all/specified Folder Elements and delete Content that does not match the given Tags.",
                                           (tags) => _ = new CleanCommand(tags, configManager)));
             commandManager.Add(new Command("show", "Show the Amount of Content available with the given Tags.",
-                                          (tags) => _ = new ShowCommand(tags)));
+                                          (tags) => _ = new ShowCommand(tags, configManager)));
             commandManager.Add(new Command("debug", "Download a small set of specified files. Used for testing.",
                                           (tags) => _ = new DebugCommand(tags, configManager)));
         }
