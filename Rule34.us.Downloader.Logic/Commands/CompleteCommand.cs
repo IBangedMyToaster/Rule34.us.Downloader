@@ -1,22 +1,16 @@
 ﻿using Rule34.us.Downloader.Logic.Extensions;
 using Rule34.us.Downloader.Logic.Rule34;
-using Rule34.us.Downloader.Logic.Tags;
+using Rule34.us.Downloader.Logic.Tagging;
 using Rule34.us.Downloader.Logic.Utility;
 
 namespace Rule34.us.Downloader.Logic.Commands
 {
-    public class CompleteCommand
+    public class CompleteCommand : CommandBase
     {
-        public Tags.Tags Tags { get; private set; }
-        public ConfigManager ConfigManager { get; }
-
         private readonly Rule34Logistic logistic = new();
 
-        public CompleteCommand(Tags.Tags tags, ConfigManager configManager)
+        public CompleteCommand(Tags tags, ConfigManager configManager) : base(tags, configManager)
         {
-            Tags = tags ?? throw new ArgumentNullException(nameof(tags));
-            ConfigManager = configManager;
-
             if (Tags.TrimmedInput().Any())
             {
                 if (!TagDirectory.Exists(ConfigManager.Configuration, Tags))

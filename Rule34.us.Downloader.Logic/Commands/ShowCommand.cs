@@ -1,15 +1,13 @@
 ﻿using Rule34.us.Downloader.Logic.Rule34;
+using Rule34.us.Downloader.Logic.Tagging;
 using Rule34.us.Downloader.Logic.Utility;
 
 namespace Rule34.us.Downloader.Logic.Commands
 {
-    public class ShowCommand
+    public class ShowCommand : CommandBase
     {
-        public Tags.Tags Tags { get; private set; }
-
-        public ShowCommand(Tags.Tags tags)
+        public ShowCommand(Tags tags, ConfigManager configManager) : base(tags, configManager)
         {
-            Tags = tags ?? throw new ArgumentNullException(nameof(tags));
             Execute();
         }
 
@@ -18,8 +16,8 @@ namespace Rule34.us.Downloader.Logic.Commands
             Rule34Logistic logistic = new();
 
             // Get all ids by tags
-            Logger.LogSimple($"Searching {string.Join(" ", Tags.Raw)}...\n", ConsoleColor.Yellow); // Log Checking
-            List<Content> contentList = logistic.GetAllIdsByTags(Tags);
+            Logger.LogSimple($"Searching {string.Join(" ", this.Tags.Raw)}...\n", ConsoleColor.Yellow); // Log Checking
+            List<Content> contentList = logistic.GetAllIdsByTags(this.Tags);
 
             Logger.LogSimple("Found", ConsoleColor.Yellow);
             Logger.LogSimple($" [{contentList.Count()}] ", ConsoleColor.White);

@@ -1,30 +1,24 @@
 ﻿using Rule34.us.Downloader.Logic.Rule34;
-using Rule34.us.Downloader.Logic.Tags;
+using Rule34.us.Downloader.Logic.Tagging;
 using Rule34.us.Downloader.Logic.Utility;
 
 namespace Rule34.us.Downloader.Logic.Commands
 {
-    public class UpdateCommand
+    public class UpdateCommand : CommandBase
     {
-        public Tags.Tags Tags { get; private set; }
-        public ConfigManager ConfigManager { get; }
-
         private readonly Rule34Logistic logistic = new();
 
-        public UpdateCommand(Tags.Tags tags, ConfigManager configManager)
+        public UpdateCommand(Tags tags, ConfigManager configManager) :  base(tags, configManager)
         {
-            Tags = tags ?? throw new ArgumentNullException(nameof(tags));
-            ConfigManager = configManager;
-
             if (Tags.TrimmedInput().Any())
             {
-                if (!TagDirectory.Exists(ConfigManager.Configuration, Tags))
+                if (!TagDirectory.Exists(ConfigManager.Configuration, this.Tags))
                 {
-                    Logger.LogSimple($"The folder \"{(string.Join(" ", Tags.TrimmedInput()))}\" does not exist!\n", ConsoleColor.Red);
+                    Logger.LogSimple($"The folder \"{(string.Join(" ", this.Tags.TrimmedInput()))}\" does not exist!\n", ConsoleColor.Red);
                     return;
                 }
 
-                UpdateSpecific(TagDirectory.GetTagDirectoryByTags(ConfigManager.Configuration, Tags));
+                UpdateSpecific(TagDirectory.GetTagDirectoryByTags(ConfigManager.Configuration, this.Tags));
                 return;
             }
 
