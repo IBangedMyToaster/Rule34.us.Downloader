@@ -31,8 +31,7 @@ jobs:
       - name: Download test files
         shell: pwsh
         working-directory: app
-        run: |
-          & ".\rule34.us Downloader.exe" --debug
+        run: '& ".\rule34.us Downloader.exe" --debug'
          
       - name: List files
         shell: pwsh
