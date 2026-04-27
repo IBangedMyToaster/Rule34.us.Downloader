@@ -1,5 +1,5 @@
 ﻿using Rule34.us.Downloader.Logic.Commands;
-using Rule34.us.Downloader.Logic.Tags;
+using Rule34.us.Downloader.Logic.Tagging;
 using Rule34.us.Downloader.Logic.Utility;
 using System.Net.Http.Headers;
 using System.Text;

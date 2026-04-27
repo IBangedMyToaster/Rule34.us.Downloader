@@ -1,18 +1,18 @@
 ﻿using Rule34.us.Downloader.Logic.Extensions;
 using Rule34.us.Downloader.Logic.Utility;
 
-namespace Rule34.us.Downloader.Logic.Tags
+namespace Rule34.us.Downloader.Logic.Tagging
 {
     public class TagDirectory
     {
         public string OriginalPath { get; private set; }
         public Tags Tags { get; private set; }
-        public string Name => TagDirectory.ConvertTagsToDirName(Tags);
+        public string Name => ConvertTagsToDirName(Tags);
 
         public TagDirectory(string path)
         {
             OriginalPath = path ?? throw new ArgumentNullException(nameof(path));
-            Tags = TagDirectory.GetTagsByPath(OriginalPath);
+            Tags = GetTagsByPath(OriginalPath);
         }
 
         public List<string> GetFilenames()
@@ -63,7 +63,7 @@ namespace Rule34.us.Downloader.Logic.Tags
 
         public static TagDirectory[] GetAllTagDirectories(Config config)
         {
-            return Directory.GetDirectories(config.SavePath).Select(dir => TagDirectory.GetTagDirectoryByTags(config, TagDirectory.GetTagsByPath(dir))).ToArray();
+            return Directory.GetDirectories(config.SavePath).Select(dir => GetTagDirectoryByTags(config, GetTagsByPath(dir))).ToArray();
         }
 
         public static TagDirectory GetTagDirectoryByTags(Config config, Tags tags)

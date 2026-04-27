@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using Rule34.us.Downloader.Logic.Extensions;
+using Rule34.us.Downloader.Logic.Tagging;
 using Rule34.us.Downloader.Logic.Utility;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -18,7 +19,7 @@ namespace Rule34.us.Downloader.Logic.Rule34
         /// <param name="tags"></param>
         /// <param name="pages"></param>
         /// <returns></returns>
-        public List<Content> GetAllIdsByTags(Tags.Tags tags, string? id = null)
+        public List<Content> GetAllIdsByTags(Tags tags, string? id = null)
         {
             int pages = 0;
             List<Content> contentList = new List<Content>();

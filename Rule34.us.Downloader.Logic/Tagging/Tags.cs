@@ -1,6 +1,6 @@
 ﻿using Rule34.us.Downloader.Logic.Commands;
 
-namespace Rule34.us.Downloader.Logic.Tags
+namespace Rule34.us.Downloader.Logic.Tagging
 {
     public class Tags
     {

@@ -1,4 +1,5 @@
 ﻿using Rule34.us.Downloader.Logic.Extensions;
+using Rule34.us.Downloader.Logic.Tagging;
 using Rule34.us.Downloader.Logic.Utility;
 
 namespace Rule34.us.Downloader.Logic.Commands
@@ -35,12 +36,12 @@ namespace Rule34.us.Downloader.Logic.Commands
             commands.Add(command);
         }
 
-        public void Execute(string command, Tags.Tags tags)
+        public void Execute(string command, Tags tags)
         {
             commands.First(com => com.Name == command.Remove(Command.prefix)).Action.Invoke(tags);
         }
 
-        public void ExecuteDefault(Tags.Tags tags)
+        public void ExecuteDefault(Tags tags)
         {
             commands.First(com => com.Name == "download").Action.Invoke(tags);
         }
@@ -63,10 +64,10 @@ namespace Rule34.us.Downloader.Logic.Commands
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public Action<Tags.Tags> Action { get; set; }
+        public Action<Tags> Action { get; set; }
         public static readonly string prefix = "--";
 
-        public Command(string name, string description, Action<Tags.Tags> action)
+        public Command(string name, string description, Action<Tags> action)
         {
             if (string.IsNullOrEmpty(name))
             {
