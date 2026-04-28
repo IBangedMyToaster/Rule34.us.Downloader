@@ -26,7 +26,7 @@ jobs:
         run: dotnet publish ./Rule34.us.Downloader.View/Rule34.us.Downloader.View.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:DebugType=None /p:DebugSymbols=false -o ./artifacts
 
       - name: Publish framework-dependet file (x64)
-        run: dotnet publish ./Rule34.us.Downloader.View/Rule34.us.Downloader.View.csproj -c Release -r win-x64 --self-contained false /p:PublishSingleFile=false /p:DebugType=None /p:DebugSymbols=false -o ./publish
+        run: dotnet publish ./Rule34.us.Downloader.View/Rule34.us.Downloader.View.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=false /p:DebugType=None /p:DebugSymbols=false -o ./publish
 
       - name: Zip published files
         run: Compress-Archive -Path ./publish/* -DestinationPath ./Rule34.us.Downloader.zip
