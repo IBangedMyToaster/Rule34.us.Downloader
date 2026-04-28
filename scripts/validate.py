@@ -5,7 +5,7 @@ import pathlib, re, json, sys
 
 ## Constants
 CURRENT_DIR = pathlib.Path(__file__).parent.resolve()
-CHECKSUM_FILEPATH = r'scripts/checksums.json'
+CHECKSUM_FILEPATH = r'checksums.json'
 FILECOUNT = 6
 
 
