@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
 
 jobs:
   build:
@@ -22,7 +23,10 @@ jobs:
         run: dotnet restore
 
       - name: Publish self-contained single file (x64)
-        run: dotnet publish ./Rule34.us.Downloader.View/Rule34.us.Downloader.View.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true -o ./publish
+        run: dotnet publish ./Rule34.us.Downloader.View/Rule34.us.Downloader.View.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:DebugType=None /p:DebugSymbols=false -o .
+
+      - name: Publish self-contained framework-dependet file (x64)
+        run: dotnet publish ./Rule34.us.Downloader.View/Rule34.us.Downloader.View.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=false /p:DebugType=None /p:DebugSymbols=false -o ./publish
 
       - name: Zip published files
         run: Compress-Archive -Path ./publish/* -DestinationPath ./Rule34.us.Downloader.zip
@@ -30,6 +34,8 @@ jobs:
       - name: Create Release and Upload Asset
         uses: softprops/action-gh-release@v1
         with:
-          files: ./Rule34.us.Downloader.zip
+          files: |
+            ./rule34.us Downloader.exe
+            ./Rule34.us.Downloader.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
