@@ -26,7 +26,7 @@ def GetFileNameByPath(file: str) -> str:
 
 
 ## Initial saving of checksums
-def GenerateFileChecksums() -> list[str]:
+def GenerateAndSafeFileChecksums() -> list[str]:
     files = glob(f'{CURRENT_DIR}/files/*.*')
     dict = {}
 
@@ -48,7 +48,14 @@ def GetChecksumFromFile(path: str, algo: str = "sha256", chunk_size: int = 1024 
     return h.hexdigest()
 
 def ChecksumValid(file: str, checksums: dict) -> bool:
-    return GetChecksumFromFile(file) == checksums[GetFileNameByPath(file)]
+    res = GetChecksumFromFile(file) == checksums[GetFileNameByPath(file)]
+
+    if(res):
+        print(f'Integretiy of file \'{file}\' verified.')
+    else:
+        print(f'Integretiy of file \'{file}\' could NOT be verified!')
+
+    return res
 
 def ValidateFiles(ImagePath: str) -> int:
     files = glob(f'{ImagePath}/*')
@@ -57,8 +64,11 @@ def ValidateFiles(ImagePath: str) -> int:
         return 1
     
     checksums = GetSavedChecksums()
-    return 0 if all(ChecksumValid(file, checksums) for file in files) else 1
+    areAllValid = all(ChecksumValid(file, checksums) for file in files)
+
+    print(f'Validation completed; Status: {'OK' if areAllValid else 'NOT OK'}')
+    return 0 if areAllValid else 1
 
 
-# files = GenerateFileChecksums()
-sys.exit(ValidateFiles('Images'))
+# files = GenerateAndSafeFileChecksums()
+sys.exit(ValidateFiles(sys.argv[1]))
